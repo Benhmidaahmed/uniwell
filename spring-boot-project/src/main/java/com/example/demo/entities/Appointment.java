@@ -1,4 +1,5 @@
 package com.example.demo.entities;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,17 +9,21 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name = "Appointment") 
+@Table(name = "Appointment")
 public class Appointment {
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String client;
+
     private ZonedDateTime date;
     private String status;
     private int userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
+
 
     public int getId() {
         return id;
