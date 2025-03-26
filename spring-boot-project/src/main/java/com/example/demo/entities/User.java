@@ -16,7 +16,7 @@ public class User {
 
     private String email;
 
-    private boolean roles;
+    private String  roles;
 
     private String password;
 
@@ -46,11 +46,11 @@ public class User {
         this.email = email;
     }
 
-    public boolean isRoles() {
+    public String isRoles() {
         return roles;
     }
 
-    public void setRoles(boolean roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
     }
 

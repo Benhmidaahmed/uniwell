@@ -13,6 +13,12 @@
 
     <p v-if="message">{{ message }}</p>
   </div>
+  <iframe
+    src="https://www.chatbase.co/chatbot-iframe/lR8CFH6F6R50cktx2LDnc"
+    width="100%"
+    style="height: 70%; width: 50%; min-height: 700px"
+    frameborder="0"
+  ></iframe>
 </template>
 
 <script>
