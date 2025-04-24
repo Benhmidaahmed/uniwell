@@ -1,9 +1,12 @@
-
+   
 
 package com.example.demo.Controller;
 
 import com.example.demo.entities.Appointment;
 import com.example.demo.repository.AppointmentRepository;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,5 +33,8 @@ public class UserController {
         appointmentRepository.save(appointment);
         return ResponseEntity.ok("Appointment saved successfully!");
     }
-
+    @GetMapping
+    public ResponseEntity<List<Appointment>> getAllAppointments() {
+        return ResponseEntity.ok(appointmentRepository.findAll());
+    }
 }

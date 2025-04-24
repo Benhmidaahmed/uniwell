@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +22,17 @@ public class Appointment {
     private int userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+     @Column(name = "E-mail")
+    private String email;
 
-
+    public String getEmail() {
+        return email;
+    }
+    
+    public Appointment setEmail(String email) {
+        this.email = email;
+        return this;
+    }
 
 
     public int getId() {
