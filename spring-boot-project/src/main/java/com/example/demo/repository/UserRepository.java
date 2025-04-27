@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-      @Query("SELECT u FROM User u JOIN u.roles r WHERE r = :role")
-    List<User> findByRolesContaining(@Param("role") Role role);
+    List<User> findByRoles(Role role);
  
     Optional<User> findByEmail(String email);
 }
