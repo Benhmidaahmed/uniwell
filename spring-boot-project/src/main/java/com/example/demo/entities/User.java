@@ -1,22 +1,17 @@
 package com.example.demo.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users") 
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(unique = true)
     private String email;
-
-    private String  roles;
 
     private String password;
 
@@ -27,6 +22,14 @@ public class User {
     private String numTel;
 
     private String urlImage;
+
+    @Enumerated(EnumType.STRING)
+    private Role roles;
+    // ou `@Enumerated(EnumType.STRING)` si tu veux utiliser un enum
+
+    private boolean enabled = false; // Pour activer le compte après email
+
+    private String provider; // Pour savoir si c’est google, facebook, ou local
 
     // Getters and Setters
 
@@ -46,13 +49,14 @@ public class User {
         this.email = email;
     }
 
-    public String isRoles() {
+    public Role getRoles() {
         return roles;
     }
-
-    public void setRoles(String roles) {
+    
+    public void setRoles(Role roles) {
         this.roles = roles;
     }
+    
 
     public String getPassword() {
         return password;
@@ -93,4 +97,22 @@ public class User {
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
     }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+   
 }

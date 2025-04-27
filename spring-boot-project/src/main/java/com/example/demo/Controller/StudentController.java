@@ -1,8 +1,10 @@
 package com.example.demo.Controller;
 
+import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +19,10 @@ public class StudentController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/students")
-    public List<User> getAllStudents() {
-        return userRepository.findByRolesContainingIgnoreCase("student");
+   @GetMapping("/students")
+    public ResponseEntity<List<User>> getStudents() {
+        List<User> students = userRepository.findByRolesContaining(Role.STUDENT);
+        return ResponseEntity.ok(students);
     }
 }
 
