@@ -3,7 +3,7 @@
     <div class="navigation">
       <ul>
         <li>
-          <a href="#">
+          <a href="#" @click.prevent="currentView = 'dashboard'">
             <span class="icon">
               <ion-icon name="laptop-sharp"></ion-icon>
             </span>
@@ -13,7 +13,7 @@
         <li>
           <a
             href="#"
-            @click="currentView = 'dashboard'"
+            @click.prevent="currentView = 'dashboard'"
             :class="{ hovered: currentView === 'dashboard' }"
           >
             <span class="icon">
@@ -25,8 +25,8 @@
         <li>
           <a
             href="#"
-            @click="currentView = 'customers'"
-            :class="{ hovered: currentView === 'customers' }"
+            @click.prevent="currentView = 'students'"
+            :class="{ hovered: currentView === 'students' }"
           >
             <span class="icon">
               <ion-icon name="people-outline"></ion-icon>
@@ -34,11 +34,10 @@
             <span class="title">Students</span>
           </a>
         </li>
-
         <li>
           <a
             href="#"
-            @click="currentView = 'messages'"
+            @click.prevent="currentView = 'messages'"
             :class="{ hovered: currentView === 'messages' }"
           >
             <span class="icon">
@@ -47,24 +46,10 @@
             <span class="title">Messages</span>
           </a>
         </li>
-
         <li>
           <a
             href="#"
-            @click="currentView = 'help'"
-            :class="{ hovered: currentView === 'help' }"
-          >
-            <span class="icon">
-              <ion-icon name="help-outline"></ion-icon>
-            </span>
-            <span class="title">Help</span>
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="#"
-            @click="currentView = 'chatbot'"
+            @click.prevent="currentView = 'chatbot'"
             :class="{ hovered: currentView === 'chatbot' }"
           >
             <span class="icon">
@@ -76,7 +61,7 @@
         <li>
           <a
             href="#"
-            @click="currentView = 'password'"
+            @click.prevent="currentView = 'password'"
             :class="{ hovered: currentView === 'password' }"
           >
             <span class="icon">
@@ -85,9 +70,8 @@
             <span class="title">Password</span>
           </a>
         </li>
-
         <li>
-          <a href="#" @click="signOut">
+          <a href="#" @click.prevent="signOut">
             <span class="icon">
               <ion-icon name="log-out-outline"></ion-icon>
             </span>
@@ -96,7 +80,7 @@
         </li>
       </ul>
     </div>
-    <!-- ========================= Main ==================== -->
+
     <div class="main">
       <div class="topbar">
         <div class="toggle" @click="toggleMenu">
@@ -113,30 +97,22 @@
           </label>
         </div>
         <div class="user" @click="toggleUserDropdown">
-          <!-- <img
-            src="https://randomuser.me/api/portraits/men/32.jpg"
-            alt="User"
-          /> -->
           <div class="dropdown" v-if="showUserDropdown">
-            <a href="#">Profile</a>
-            <a href="#">Settings</a>
-            <a href="#" @click="signOut">Logout</a>
+            <a href="#" @click.prevent>Profile</a>
+            <a href="#" @click.prevent>Settings</a>
+            <a href="#" @click.prevent="signOut">Logout</a>
           </div>
         </div>
       </div>
 
-      <!-- Dashboard Content -->
+      <!-- Dashboard View -->
       <div v-if="currentView === 'dashboard'">
-        
-
-        <!-- ================ Order Details List ================= -->
         <div class="details">
           <div class="recentOrders">
             <div class="cardHeader">
               <h2>Appointments</h2>
-              <a href="#" class="btn" @click="showAllAppointments">View All</a>
+              <a href="#" class="btn" @click.prevent="currentView = 'allAppointments'">View All</a>
             </div>
-
             <table class="appointments-table">
               <thead>
                 <tr>
@@ -146,40 +122,40 @@
                   <td>Status</td>
                 </tr>
               </thead>
-
               <tbody>
-      <tr v-for="appointment in appointments" :key="appointment.id">
-        <td>{{ appointment.client }}</td>
-        <td>{{ appointment.email }}</td>
-        <td>{{ formatTime(appointment.date) }}</td>
-        <td>{{ appointment.status || 'Pending' }}</td>
-      </tr>
-    </tbody>
+                <tr v-for="appointment in limitedAppointments" :key="appointment.id">
+                  <td>{{ appointment.client }}</td>
+                  <td>{{ appointment.email }}</td>
+                  <td>{{ formatTime(appointment.date) }}</td>
+                  <td>
+                    <span :class="'status ' + (appointment.status || 'pending')">
+                      {{ appointment.status || 'Pending' }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
 
-          <!-- ================= New Customers ================ -->
           <div class="recentCustomers">
             <div class="cardHeader">
               <h2>Students List</h2>
             </div>
-
             <table>
               <tr
-                v-for="(customer, index) in recentCustomers"
-                :key="index"
-                @click="viewCustomer(customer.id)"
+                v-for="student in recentStudents"
+                :key="student.id"
+                @click="viewStudent(student.id)"
               >
                 <td width="60px">
                   <div class="imgBx">
-                    <img :src="customer.avatar" :alt="customer.name" />
-                    
+                    <img :src="student.avatar" :alt="student.name" />
                   </div>
                 </td>
                 <td>
                   <h4>
-                    {{ customer.name }} <br />
-                    <span>{{ customer.location }}</span>
+                    {{ student.name }}<br />
+                    <span>{{ student.email }}</span>
                   </h4>
                 </td>
               </tr>
@@ -188,36 +164,104 @@
         </div>
       </div>
 
-      <!-- Appointment Form View -->
-      <div v-if="currentView === 'appointment'" class="form-container">
-        <div class="form-card">
-          <h2>Create New Appointment</h2>
-          <form @submit.prevent="submitForm">
-            <div class="form-group">
-              <label for="client">Client Name</label>
-              <input
-                type="text"
-                id="client"
-                v-model="appointment.client"
-                required
-              />
+      <!-- Student Detail View -->
+      <div v-if="currentView === 'student-detail' && selectedStudent" class="student-detail-view">
+        <div class="cardHeader">
+          <h2>Student Details</h2>
+          <button @click="currentView = 'students'" class="back-btn">Back to Students</button>
+        </div>
+        <div class="student-profile">
+          <div class="profile-header">
+            <div class="avatar">
+              <img :src="selectedStudent.urlImage || 'https://via.placeholder.com/150'" :alt="selectedStudent.firstName" />
             </div>
-            <div class="form-group">
-              <label for="date">Appointment Date</label>
-              <input
-                type="datetime-local"
-                id="date"
-                v-model="appointment.date"
-                required
-              />
+            <div class="profile-info">
+              <h1>{{ selectedStudent.firstName }} {{ selectedStudent.lastName }}</h1>
+              <p class="email">{{ selectedStudent.email }}</p>
             </div>
-            <button type="submit" class="submit-btn">Submit Appointment</button>
-          </form>
-          <p v-if="message" class="message">{{ message }}</p>
+          </div>
+          <div class="profile-details">
+            <div class="detail-card">
+              <h3>Personal Information</h3>
+              <div class="detail-row">
+                <span class="detail-label">First Name:</span>
+                <span class="detail-value">{{ selectedStudent.firstName }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Last Name:</span>
+                <span class="detail-value">{{ selectedStudent.lastName }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ selectedStudent.email }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Other Views -->
+      <!-- All Students View -->
+      <div v-if="currentView === 'students'" class="students-view">
+        <div class="cardHeader">
+          <h2>All Students</h2>
+          <button @click="currentView = 'dashboard'" class="back-btn">Back to Dashboard</button>
+        </div>
+        <table class="students-table">
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="student in allStudents" :key="student.id">
+              <td>
+                <div class="imgBx">
+                  <img :src="student.urlImage || 'https://via.placeholder.com/40'" :alt="student.firstName" />
+                </div>
+              </td>
+              <td>{{ student.firstName }} {{ student.lastName }}</td>
+              <td>{{ student.email }}</td>
+              <td>
+                <button @click="viewStudent(student.id)" class="view-btn">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- All Appointments View -->
+      <div v-if="currentView === 'allAppointments'" class="all-appointments-view">
+        <div class="cardHeader">
+          <h2>All Appointments</h2>
+          <button @click="currentView = 'dashboard'" class="back-btn">Back to Dashboard</button>
+        </div>
+        <table class="appointments-table full-view">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>E-mail</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="appointment in appointments" :key="appointment.id">
+              <td>{{ appointment.client }}</td>
+              <td>{{ appointment.email }}</td>
+              <td>{{ formatTime(appointment.date) }}</td>
+              <td>
+                <span :class="'status ' + (appointment.status || 'pending')">
+                  {{ appointment.status || 'Pending' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <!-- Chatbot View -->
       <div v-if="currentView === 'chatbot'" class="chatbot-container">
         <iframe
@@ -226,58 +270,14 @@
           style="height: 70%; min-height: 700px"
           frameborder="0"
         ></iframe>
-        <button @click="currentView = 'dashboard'" class="back-btn">
-          Back to Dashboard
-        </button>
+        <button @click="currentView = 'dashboard'" class="back-btn">Back to Dashboard</button>
       </div>
 
-      <!-- Other Views -->
-      <div v-if="currentView === 'allAppointments'" class="all-appointments-view">
-  <div class="cardHeader">
-    <h2>All Appointments</h2>
-    <button @click="currentView = 'dashboard'" class="back-btn">
-      Back to Dashboard
-    </button>
-  </div>
-  
-  <table class="appointments-table full-view">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>E-mail</th>
-        <th>Time</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="appointment in allAppointments" :key="appointment.id">
-        <td>{{ appointment.client }}</td>
-        <td>{{ appointment.email }}</td>
-        <td>{{ formatTime(appointment.date) }}</td>
-        <td>
-          <span :class="'status ' + (appointment.status || 'pending')">
-            {{ appointment.status || 'Pending' }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-      <div
-        v-if="
-          currentView !== 'dashboard' &&
-          currentView !== 'appointment' &&
-          currentView !== 'chatbot'
-        "
-        class="view-content"
-      >
-        <h2>
-          {{ currentView.charAt(0).toUpperCase() + currentView.slice(1) }} View
-        </h2>
-        <p>This is the {{ currentView }} view content.</p>
-        <button @click="currentView = 'dashboard'" class="back-btn">
-          Back to Dashboard
-        </button>
+      <!-- Generic View for other menu items -->
+      <div v-if="isGenericView" class="generic-view">
+        <h2>{{ currentView.charAt(0).toUpperCase() + currentView.slice(1) }}</h2>
+        <p>This section is under development.</p>
+        <button @click="currentView = 'dashboard'" class="back-btn">Back to Dashboard</button>
       </div>
     </div>
   </div>
@@ -287,52 +287,67 @@
 export default {
   data() {
     return {
-      currentView: "dashboard",
-      searchQuery: "",
+      currentView: 'dashboard',
+      searchQuery: '',
       showUserDropdown: false,
+      selectedStudent: null,
+      allStudents: [],
+      recentStudents: [],
+      appointments: [],
       stats: {
         dailyViews: 1504,
         sales: 80,
         comments: 284,
-        earnings: 7842,
-      },
-      
-      recentCustomers: [],
-      appointments: [],
-      appointment: {
-        email:"",
-        client: "",
-        date: "",
-      },
-      message: "",
+        earnings: 7842
+      }
     };
   },
-  methods: 
-  {fetchStudents() {
-    fetch("http://localhost:8084/api/users/students")
-      .then((res) => res.json())
-      .then((data) => {
-        this.recentCustomers = data.map(student => ({
-          id: student.id,
-          name: `${student.firstName} ${student.lastName}`,
-          location: student.email,
-          avatar: student.urlImage || 'https://via.placeholder.com/40' // image par défaut si vide
-        }));
-      })
-      .catch((err) => console.error("Erreur de chargement des étudiants :", err));
+  computed: {
+    limitedAppointments() {
+      return this.appointments.slice(0, 5);
+    },
+    isGenericView() {
+      return !['dashboard', 'students', 'student-detail', 'allAppointments', 'chatbot'].includes(this.currentView);
+    }
   },
-  fetchAppointments() {
-  fetch("http://localhost:8084/api/appointments")
-    .then((res) => res.json())
-    .then((data) => {
-      this.appointments = data;
-    })
-    .catch((err) => {
-      console.error("Error fetching appointments:", err);
-    });
-},
-formatTime(dateString) {
-      return new Date(dateString).toLocaleString();
+  methods: {
+    async fetchAllStudents() {
+      try {
+        const response = await fetch("http://localhost:8084/api/users/students");
+        this.allStudents = await response.json();
+        this.prepareRecentStudents();
+      } catch (error) {
+        console.error("Error fetching students:", error);
+        this.allStudents = [];
+        this.recentStudents = [];
+      }
+    },
+    prepareRecentStudents() {
+      this.recentStudents = this.allStudents.slice(0, 5).map(student => ({
+        id: student.id,
+        name: `${student.firstName} ${student.lastName}`,
+        email: student.email,
+        avatar: student.urlImage || 'https://via.placeholder.com/40'
+      }));
+    },
+    async fetchAppointments() {
+      try {
+        const response = await fetch("http://localhost:8084/api/appointments");
+        this.appointments = await response.json();
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+        this.appointments = [];
+      }
+    },
+    viewStudent(id) {
+      this.selectedStudent = this.allStudents.find(student => student.id === id);
+      if (this.selectedStudent) {
+        this.currentView = 'student-detail';
+      }
+    },
+    formatTime(dateString) {
+      if (!dateString) return 'N/A';
+      return new Date(dateString).toLocaleString('fr-FR');
     },
     toggleMenu() {
       const navigation = document.querySelector(".navigation");
@@ -345,52 +360,203 @@ formatTime(dateString) {
     },
     performSearch() {
       if (this.searchQuery.trim()) {
-        alert(`Searching for: ${this.searchQuery}`);
+        console.log("Searching for:", this.searchQuery);
+        // Implémentez ici la logique de recherche
       }
     },
     signOut() {
-      alert("Signing out...");
-      // Implement actual sign out functionality here
-    },
-    viewCustomer(id) {
-      this.currentView = "customer-detail";
-      // You would typically fetch customer details here
-      alert(`Viewing customer with ID: ${id}`);
-    },
-    formatNumber(num) {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-    formatDateToISO(date) {
-      return new Date(date).toISOString();
-    },
-    submitForm() {
-      const formattedDate = this.formatDateToISO(this.appointment.date);
-      // In a real app, you would send this to your backend
-      console.log("Submitting appointment:", {
-        client: this.appointment.client,
-        date: formattedDate,
-      });
-      this.message = "Appointment submitted successfully!";
-      this.appointment.client = "";
-      this.appointment.date = "";
-      // Reset message after 3 seconds
-      setTimeout(() => {
-        this.message = "";
-        this.currentView = "dashboard";
-      }, 3000);
-    },
-  },
-  mounted() {
-    // Initialize any necessary data when component mounts
-  this.fetchStudents();
-  this.fetchAppointments();
-}
+      localStorage.removeItem('token');
+      if (window.caches) {
+    caches.keys().then(names => {
+      names.forEach(name => caches.delete(name));
+    });
   }
+      window.location.replace('/');
+      // Redirigez vers la page de login si nécessaire
+    }
+  },
+  async mounted() {
+    await Promise.all([
+      this.fetchAllStudents(),
+      this.fetchAppointments()
+    ]);
+    console.log("Initial data loaded");
+  }
+};
 </script>
-<style>
-body {
-  background-color: red !important;
+<style  >
+/* Student Detail View Styles */
+.student-detail-view {
+  padding: 20px;
 }
+
+.student-profile {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profile-header .avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 30px;
+}
+
+.profile-header .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info h1 {
+  font-size: 2rem;
+  color: var(--blue);
+  margin-bottom: 5px;
+}
+
+.profile-info .email {
+  color: var(--black2);
+  font-size: 1.1rem;
+}
+
+.profile-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.detail-card {
+  background: var(--gray);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.detail-card h3 {
+  color: var(--blue);
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--black1);
+  width: 150px;
+}
+
+.detail-value {
+  color: var(--black2);
+  flex: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .profile-header .avatar {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .detail-row {
+    flex-direction: column;
+  }
+  
+  .detail-label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+.students-view {
+  padding: 20px;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.students-table th,
+.students-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.students-table th {
+  font-weight: 600;
+  color: var(--blue);
+  background-color: rgba(42, 33, 133, 0.05);
+}
+
+.students-table tbody tr:hover {
+  background: rgba(42, 33, 133, 0.1);
+}
+
+.students-table .imgBx {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.students-table .imgBx img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.view-btn {
+  padding: 8px 16px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.view-btn:hover {
+  background: #1a1668;
+}
+.appointments-table {
+  table-layout: auto; /* Allow columns to adjust based on content */
+  width: 100%; /* Ensure the table takes full width */
+}
+
+.appointments-table td:nth-child(2), /* Email column */
+.appointments-table th:nth-child(2) {
+  white-space: normal; /* Allow wrapping of email text */
+  word-break: break-word; /* Break long words if necessary */
+  max-width: 300px; /* Set a reasonable max width for the email column */
+}
+
+.appointments-table td:nth-child(3), /* Time column */
+.appointments-table th:nth-child(3) {
+  white-space: nowrap; /* Prevent wrapping for the time column */
+  text-align: center; /* Center-align the time column */
+}
+
 .appointments-table td:nth-child(2) {  /* Email column */
   padding-right: 40px; /* Adds space after email column */
 }
@@ -551,18 +717,19 @@ body {
   margin: 0;
   display: block;
   overflow: auto;
-
+  table-layout: auto;
 
 }
 
 .appointments-table thead {
-  display: table;
+  display: table-header-group;;
   width: 100%;
   table-layout: fixed;
   position: sticky;
   top: 0;
   background: var(--white);
   z-index: 10;
+  text-align: left;
 }
 .appointments-table tbody {
   display: table;
@@ -571,7 +738,7 @@ body {
 }
 
 .appointments-table tr {
-  display: table;
+  display: table-row-group;
   width: 100%;
   table-layout: fixed;
 }
@@ -785,6 +952,7 @@ body {
   grid-template-columns: 2fr 1fr;
   gap: 30px;
   padding: 20px;
+  align-items: start;
 }
 .recentOrders {
   position: relative;
@@ -795,6 +963,9 @@ body {
   box-shadow: var(--shadow);
   border-radius: 20px;
   height: 100%;
+  overflow: hidden;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 .recentOrders th, 
 .recentOrders td {
@@ -818,6 +989,7 @@ body {
   border-collapse: collapse;
   margin-top: 0;
 }
+
 .recentOrders table thead tr {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -826,6 +998,7 @@ body {
   padding: 12px 10px;
   color: var(--blue);
   text-align: left;
+  top: 0;
 }
 .recentOrders table tbody tr {
   color: var(--black1);
@@ -874,12 +1047,14 @@ recentOrders table tbody td {
 }
 .details .recentOrders {
   position: relative;
-  display: grid;
+  display: flex;
   min-height: 500px;
   background: var(--white);
   padding: 20px;
   box-shadow: var(--shadow);
   border-radius: 20px;
+  
+  
 }
 .details .cardHeader {
   display: flex;
@@ -899,6 +1074,7 @@ recentOrders table tbody td {
   color: var(--white);
   border-radius: 6px;
   transition: var(--transition);
+  margin-left:350px;
 }
 .cardHeader .btn:hover {
   background: #1a1668;

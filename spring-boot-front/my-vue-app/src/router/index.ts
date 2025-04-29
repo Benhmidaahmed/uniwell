@@ -1,12 +1,26 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+
 import UserForm from "@/components/UserForm.vue";
+import UserAuthentification from "@/components/UserAuthentification.vue";
+import StudentPortal from "@/pages/StudentPortal.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
+    path: "/dashboard",
     name: "UserForm",
     component: UserForm,
+    meta: { requiresAuth: true }
+    
+  },
+{
+    path: "/",
+    name: "UserAuthentification",
+    component: UserAuthentification,
+  },
+  {
+    path:"/StudentPortal",
+    name:"StudentPortal",
+    component:StudentPortal,
   },
   {
     path: "/about",
@@ -23,5 +37,18 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  if (to.meta.requiresGuest && token) {
+    next('/dashboard');
+    return;
+  }
+  if (to.meta.requiresAuth && !token) {
+    next('/');
+    
+  }
+   else {
+    next();
+  }
+});
 export default router;
