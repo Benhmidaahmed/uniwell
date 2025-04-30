@@ -21,13 +21,13 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authManager;
 
-    public String register(User user) {
+    public String register(User user,Role role) {
         if (userRepo.findByEmail(user.getEmail()).isPresent()) {
             return "Email already registered.";
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Role.USER);
+        user.setRoles(role);
         user.setEnabled(false);
         userRepo.save(user);
 
@@ -40,6 +40,8 @@ public class AuthService {
 
         return "Inscription réussie ! Vérifie ton email pour confirmer ton compte.";
     }
+
+
 
     public String login(String email, String password) {
         authManager.authenticate(

@@ -116,7 +116,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
-                    "/api/auth/**"
+                    "/api/auth/**",
+                    "/api/forum/**"
                     // "/api/appointments",
                     // "/api/users/students/**"  // Ajoutez cette ligne
                     
