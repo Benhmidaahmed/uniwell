@@ -37,4 +37,5 @@ public class UserController {
     public ResponseEntity<List<Appointment>> getAllAppointments() {
         return ResponseEntity.ok(appointmentRepository.findAll());
     }
+    
 }

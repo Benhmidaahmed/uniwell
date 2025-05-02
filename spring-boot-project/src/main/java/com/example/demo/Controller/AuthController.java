@@ -1,9 +1,16 @@
 package com.example.demo.Controller;
 
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.PsychologistRegisterRequest;
+import com.example.demo.dto.StudentRegisterRequest;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import com.example.demo.service.AuthService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,31 +21,53 @@ public class AuthController {
     private final AuthService authService;
 
     // Inscription avec envoi d’email
-    @PostMapping("/user/register")
-    public String registerUserEP(@RequestBody User user) {
-        return authService.register(user,Role.USER);
-    }
-
-    @PostMapping("/admin/register")
-    public String registerAdminEp(@RequestBody User user) {
-        return authService.register(user,Role.ADMIN);
-    }
-
-    @PostMapping("/psy/register")
-    public String registerPsyEp(@RequestBody User user) {
-        return authService.register(user,Role.Psy);
-    }
-
+   
     @PostMapping("/student/register")
-    public String registerStudentEp(@RequestBody User user) {
-        return authService.register(user,Role.STUDENT);
+    public String registerStudent(@RequestBody StudentRegisterRequest request) {
+        User user = new User();
+        // Set common fields
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setNumTel(request.getPhoneNumber());
+        
+        // Set student-specific fields
+        user.setStudentCardNumber(request.getStudentCardNumber());
+        user.setUniversity(request.getUniversity());
+        user.setStudyLevel(request.getStudyLevel());
+        
+        return authService.register(user, Role.STUDENT);
+    }
+
+    @PostMapping("/psychologist/register")
+    public String registerPsychologist(@RequestBody PsychologistRegisterRequest request) {
+        User user = new User();
+        // Set common fields
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setNumTel(request.getPhoneNumber());
+        
+        // Set psychologist-specific fields
+        user.setAdeliNumber(request.getAdeliNumber());
+        user.setSpecialization(request.getSpecialization());
+        
+        return authService.register(user, Role.Psy);
     }
 
 
     // Connexion simple (on peut plus tard ajouter un token JWT)
     @PostMapping("/login")
-    public String login(@RequestBody User loginUser) {
-        return authService.login(loginUser.getEmail(), loginUser.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            // Modifiez pour retourner plus d'informations
+            Map<String, Object> response = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(e.getMessage());
+        }
     }
 
     // Confirmation de compte via lien reçu par email

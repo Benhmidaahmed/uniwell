@@ -23,14 +23,61 @@ public class User {
 
     private String urlImage;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // Important pour stocker le nom de l'enum
     private Role roles;
     // ou `@Enumerated(EnumType.STRING)` si tu veux utiliser un enum
 
     private boolean enabled = false; // Pour activer le compte après email
 
     private String provider; // Pour savoir si c’est google, facebook, ou local
+// Champs spécifiques aux étudiants
+private String studentCardNumber;
+private String university;
+private String studyLevel; // L1, L2, L3, M1, M2
 
+// Champs spécifiques aux psychologues
+private String adeliNumber;
+private String specialization;
+// Ajoutez les nouveaux getters et setters
+public String getStudentCardNumber() {
+    return studentCardNumber;
+}
+
+public void setStudentCardNumber(String studentCardNumber) {
+    this.studentCardNumber = studentCardNumber;
+}
+
+public String getUniversity() {
+    return university;
+}
+
+public void setUniversity(String university) {
+    this.university = university;
+}
+
+public String getStudyLevel() {
+    return studyLevel;
+}
+
+public void setStudyLevel(String studyLevel) {
+    this.studyLevel = studyLevel;
+}
+
+public String getAdeliNumber() {
+    return adeliNumber;
+}
+
+public void setAdeliNumber(String adeliNumber) {
+    this.adeliNumber = adeliNumber;
+}
+
+public String getSpecialization() {
+    return specialization;
+}
+
+public void setSpecialization(String specialization) {
+    this.specialization = specialization;
+}
     // Getters and Setters
 
     public int getId() {
