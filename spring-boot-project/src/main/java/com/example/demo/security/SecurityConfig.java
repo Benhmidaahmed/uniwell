@@ -166,7 +166,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8082")); // Remplacez par votre URL frontend
+        configuration.setAllowedOrigins(List.of("http://localhost:8081")); // Remplacez par votre URL frontend
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

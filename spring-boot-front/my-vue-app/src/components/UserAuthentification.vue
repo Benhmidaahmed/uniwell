@@ -198,16 +198,15 @@ const handleRegister = async () => {
 
     // Réinitialisation après succès
     if (registerSuccess.value) {
-      setTimeout(() => {
-        Object.keys(registerData).forEach(key => {
-          registerData[key] = '';
-        });
-        registerMessage.value = '';
-        // Basculer vers le formulaire de connexion
-        const container = document.getElementById('container');
-        container?.classList.remove('right-panel-active');
-      }, 3000);
-    }
+  setTimeout(() => {
+    (Object.keys(registerData) as Array<keyof typeof registerData>).forEach((key) => {
+      registerData[key] = '';
+    });
+    registerMessage.value = '';
+    const container = document.getElementById('container');
+    container?.classList.remove('right-panel-active');
+  }, 3000);
+}
 
   } catch (error: any) {
     // Gestion améliorée des erreurs
@@ -542,7 +541,7 @@ button:disabled {
     overflow: hidden;
     width: 768px;
     max-width: 100%;
-    min-height: 600px;
+    min-height: 650px;
   }
   
   .form-container {
