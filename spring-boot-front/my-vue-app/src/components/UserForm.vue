@@ -384,7 +384,7 @@ export default {
   }
 };
 </script>
-<style  >
+<style scoped >
 /* Student Detail View Styles */
 .student-detail-view {
   padding: 20px;
@@ -560,12 +560,7 @@ export default {
 .appointments-table td:nth-child(2) {  /* Email column */
   padding-right: 40px; /* Adds space after email column */
 }
-html,
-body,
-#app {
-  margin: 0;
-  padding: 0;
-}
+
 #app > div,
 #app > nav,
 #app > div > div {
@@ -577,26 +572,9 @@ nav {
   padding: 0;
   height: 0;
 }
-* {
-  font-family: "Ubuntu", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-:root {
-  --blue: #2a2185;
-  --white: #fff;
-  --gray: #f5f5f5;
-  --black1: #222;
-  --black2: #999;
-  --shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-  --transition: all 0.3s ease;
-}
-body {
-  min-height: 100vh;
-  overflow-x: hidden;
-  background: var(--gray);
-}
+
+
+
 .container {
   position: relative;
   width: 100%;

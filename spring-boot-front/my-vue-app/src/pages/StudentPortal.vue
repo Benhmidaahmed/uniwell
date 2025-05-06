@@ -133,7 +133,7 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <!-- <h2>Get The Latest App From App Stores</h2> -->
-                    <p style="margin-top:150px"><h3 style="padding-bottom:30px">Welcome to UniWell – Your Student Mental Health Companion</h3>
+                    <p><h3>Welcome to UniWell – Your Student Mental Health Companion</h3>
 UniWell is a dedicated platform designed to support students' mental well-being. We offer a safe space to talk, access professional help, schedule therapy sessions, and connect with peers through forums. Whether you're feeling overwhelmed, anxious, or just need someone to talk to, MindSupport is here to help you feel heard, supported, and empowered.
 
 </p>
@@ -151,7 +151,7 @@ UniWell is a dedicated platform designed to support students' mental well-being.
             </div>
             <div class="col-lg-6">
               <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
-                <img style="margin-top:100px;" src="/template/assets/images/sliderr.png" alt="">
+                <img  src="/template/assets/images/sliderr1.png" style="width: 550px; height: 200px;" alt="">
               </div>
             </div>
           </div>
@@ -165,7 +165,7 @@ UniWell is a dedicated platform designed to support students' mental well-being.
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
           <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
-            <h4 style="padding-top:50px">Professional <em>Psychologists</em> for you</h4>
+            <h4 >Professional <em>Psychologists</em> for you</h4>
             <img src="/template/assets/images/heading-line-dec.png" alt="">
             <p>Our platform features a curated list of certified psychologists ready to support you. Browse profiles, read reviews, and choose the expert that best fits your needs—all in a few clicks.</p>
           </div>
@@ -521,71 +521,46 @@ UniWell is a dedicated platform designed to support students' mental well-being.
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
           <div class="section-heading">
-            <h4>We Have The Best Pre-Order <em>Prices</em> You Can Get</h4>
+            <h4>Below, you’ll find our trusted network of partnered <em>Psychologists</em> ready to support you.</h4>
             <img src="/template/assets/images/heading-line-dec.png" alt="">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
+            <p>You’re not alone. Take the first step today—we’re here to help.</p>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="pricing-item-regular">
-            <span class="price">$12</span>
-            <h4>Standard Plan App</h4>
-            <div class="icon">
-              <img src="/template/assets/images/pricing-table-01.png" alt="">
-            </div>
-            <ul>
-              <li>Lorem Ipsum Dolores</li>
-              <li>20 TB of Storage</li>
-              <li class="non-function">Life-time Support</li>
-              <li class="non-function">Premium Add-Ons</li>
-              <li class="non-function">Fastest Network</li>
-              <li class="non-function">More Options</li>
-            </ul>
-            <div class="border-button">
-              <a href="#">Purchase This Plan Now</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item-pro">
-            <span class="price">$25</span>
-            <h4>Business Plan App</h4>
-            <div class="icon">
-              <img src="/template/assets/images/pricing-table-01.png" alt="">
-            </div>
-            <ul>
-              <li>Lorem Ipsum Dolores</li>
-              <li>50 TB of Storage</li>
-              <li>Life-time Support</li>
-              <li>Premium Add-Ons</li>
-              <li class="non-function">Fastest Network</li>
-              <li class="non-function">More Options</li>
-            </ul>
-            <div class="border-button">
-              <a href="#">Purchase This Plan Now</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item-regular">
-            <span class="price">$66</span>
-            <h4>Premium Plan App</h4>
-            <div class="icon">
-              <img src="/template/assets/images/pricing-table-01.png" alt="">
-            </div>
-            <ul>
-              <li>Lorem Ipsum Dolores</li>
-              <li>120 TB of Storage</li>
-              <li>Life-time Support</li>
-              <li>Premium Add-Ons</li>
-              <li>Fastest Network</li>
-              <li>More Options</li>
-            </ul>
-            <div class="border-button">
-              <a href="#">Purchase This Plan Now</a>
-            </div>
-          </div>
-        </div>
+        <div
+         class="col-lg-4"
+         v-for="psy in psychologists"
+         :key="psy.id"
+       >
+         <div class="pricing-item-regular">
+           <!-- you can swap to a different class if you like -->
+
+           <!-- Avatar -->
+           <div class="icon">
+             <img
+               :src="psy.urlImage || '/default-avatar.png'"
+               :alt="psy.firstName + ' ' + psy.lastName"
+             />
+           </div>
+
+           <!-- Name -->
+           <h4>{{ psy.firstName }} {{ psy.lastName }}</h4>
+
+           <!-- Specialization instead of price -->
+          <span class="price">{{ psy.specialization }}</span>
+
+           <!-- (Optional) Short bio or tagline -->
+           <!-- <p class="bio">
+             {{ psy.bio || 'No bio available.' }}
+           </p> -->
+
+           <!-- Action button -->
+           <div class="border-button">
+             <a href="#" @click.prevent="bookSession(psy.id)">
+               Book a Session
+             </a>
+           </div>
+         </div>
+       </div>
       </div>
     </div>
   </div> 
@@ -683,12 +658,29 @@ UniWell is a dedicated platform designed to support students' mental well-being.
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: "StudentPortal",
+  data(){
+    return{
+      psychologists: [],
+    };
+  },
   mounted() {
+    axios.get('http://localhost:8084/api/psychologists')
+      .then(({data}) => {
+        this.psychologists = data;
+      })
+      .catch(error => {
+        console.error("There was an error fetching the psychologists!", error);
+      });
     this.loadResources();
   },
   methods: {
+    bookSession(id) {
+      // e.g. navigate to /booking/:id or open a modal
+      this.$router.push({ name: 'Booking', params: { psyId: id } });
+    },
     hidePreloader() {
   const preloader = document.getElementById('js-preloader');
   if (preloader) {
