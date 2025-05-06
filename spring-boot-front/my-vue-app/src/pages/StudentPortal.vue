@@ -537,7 +537,7 @@ UniWell is a dedicated platform designed to support students' mental well-being.
            <!-- Avatar -->
            <div class="icon">
              <img
-               :src="psy.urlImage || '/default-avatar.png'"
+               :src="getImageUrl(psy.urlImage)"
                :alt="psy.firstName + ' ' + psy.lastName"
              />
            </div>
@@ -549,9 +549,9 @@ UniWell is a dedicated platform designed to support students' mental well-being.
           <span class="price">{{ psy.specialization }}</span>
 
            <!-- (Optional) Short bio or tagline -->
-           <!-- <p class="bio">
+           <p class="bio">
              {{ psy.bio || 'No bio available.' }}
-           </p> -->
+           </p>
 
            <!-- Action button -->
            <div class="border-button">
@@ -677,6 +677,14 @@ export default {
     this.loadResources();
   },
   methods: {
+    getImageUrl(path) {
+      if (!path) return '/default-avatar.png';
+      // If it's already an absolute URL, just use it:
+      if (path.startsWith('http')) return path;
+      // Otherwise, prefix your backend origin:
+      return `http://localhost:8084${path}`;
+    },
+
     bookSession(id) {
       // e.g. navigate to /booking/:id or open a modal
       this.$router.push({ name: 'Booking', params: { psyId: id } });
@@ -739,5 +747,52 @@ export default {
   }
 };
 </script>
+<style  >
+.icon img {
+  width: 150px;               /* pick your size */
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;          /* fill the circle without distortion */
+}
 
+/* 2) Add the glow */
+.icon img {
+  /* subtle colored glow */
+  box-shadow:
+    0 0 10px rgba(74, 190, 255, 0.6),
+    0 0 20px rgba(74, 190, 255, 0.4),
+    0 0 30px rgba(74, 190, 255, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+}
 
+/* 3) (Optional) Intensify glow on hover */
+.icon img:hover {
+  box-shadow:
+    0 0 20px rgba(74, 190, 255, 0.8),
+    0 0 40px rgba(74, 190, 255, 0.6),
+    0 0 60px rgba(74, 190, 255, 0.4);
+}
+
+/* 4) (Super‐fancy) Animate the glow */
+@keyframes pulseGlow {
+  0% {
+    box-shadow:
+      0 0 5px rgba(74, 190, 255, 0.4),
+      0 0 15px rgba(74, 190, 255, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(74, 190, 255, 0.8),
+      0 0 40px rgba(74, 190, 255, 0.6);
+  }
+  100% {
+    box-shadow:
+      0 0 5px rgba(74, 190, 255, 0.4),
+      0 0 15px rgba(74, 190, 255, 0.2);
+  }
+}
+
+.icon img.pulsing {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+</style>

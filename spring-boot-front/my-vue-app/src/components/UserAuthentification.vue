@@ -24,6 +24,14 @@
         <input v-model="registerData.email" type="email" placeholder="Email" required>
         <input v-model="registerData.password" type="password" placeholder="Mot de passe" required>
         <input v-model="registerData.phoneNumber" type="tel" placeholder="Téléphone">
+        <div class="form-group">
+      <input
+        type="file"
+        id="profileImage"
+        accept="image/*"
+        @change="onFileChange"
+      />
+    </div>
 
         <!-- Champs spécifiques étudiants -->
         <div v-if="userType === 'student'" class="specific-fields">
@@ -103,12 +111,19 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-
+const profileImageFile = ref<File | null>(null);
+  function onFileChange(e: Event) {
+  const files = (e.target as HTMLInputElement).files;
+  if (files && files.length > 0) {
+    profileImageFile.value = files[0];
+  }
+}
 const router = useRouter();
 
 // État du formulaire
 const userType = ref<'student' | 'psychologist'>('student');
 const isLoading = ref(false);
+
 
 // Données de formulaire
 const registerData = reactive({
@@ -156,82 +171,155 @@ const selectUserType = (type: 'student' | 'psychologist') => {
 };
 
 // Inscription
-const handleRegister = async () => {
+// const handleRegister = async () => {
+//   try {
+//     isLoading.value = true;
+//     registerMessage.value = '';
+
+//     // Préparation des données en fonction du type d'utilisateur
+//     let requestData;
+//     let endpoint;
+
+//     if (userType.value === 'student') {
+//       endpoint = 'http://localhost:8084/api/auth/student/register';
+//       requestData = {
+//         firstName: registerData.firstName,
+//         lastName: registerData.lastName,
+//         email: registerData.email,
+//         password: registerData.password,
+//         phoneNumber: registerData.phoneNumber,
+//         studentCardNumber: registerData.studentCardNumber,
+//         university: registerData.university,
+//         studyLevel: registerData.studyLevel
+//       };
+//     } else {
+//       endpoint = 'http://localhost:8084/api/auth/psychologist/register';
+//       requestData = {
+//         firstName: registerData.firstName,
+//         lastName: registerData.lastName,
+//         email: registerData.email,
+//         password: registerData.password,
+//         phoneNumber: registerData.phoneNumber,
+//         adeliNumber: registerData.adeliNumber,
+//         specialization: registerData.specialization
+//       };
+//     }
+
+//     // Envoi des données
+//     const response = await axios.post(endpoint, requestData);
+
+//     registerMessage.value = response.data || 'Inscription réussie ! Vérifiez votre email pour confirmer votre compte.';
+//     registerSuccess.value = true;
+
+//     // Réinitialisation après succès
+//     if (registerSuccess.value) {
+//   setTimeout(() => {
+//     (Object.keys(registerData) as Array<keyof typeof registerData>).forEach((key) => {
+//       registerData[key] = '';
+//     });
+//     registerMessage.value = '';
+//     const container = document.getElementById('container');
+//     container?.classList.remove('right-panel-active');
+//   }, 3000);
+// }
+
+//   } catch (error: any) {
+//     // Gestion améliorée des erreurs
+//     let errorMessage = "Erreur lors de l'inscription";
+    
+//     if (error.response) {
+//       if (typeof error.response.data === 'string') {
+//         errorMessage = error.response.data;
+//       } else if (error.response.data.message) {
+//         errorMessage = error.response.data.message;
+//       } else if (error.response.status === 409) {
+//         errorMessage = "Cet email est déjà utilisé";
+//       } else if (error.response.status === 400) {
+//         errorMessage = "Données invalides. Vérifiez les champs requis.";
+//       }
+//     } else if (error.request) {
+//       errorMessage = "Erreur de connexion au serveur";
+//     }
+
+//     registerMessage.value = errorMessage;
+//     registerSuccess.value = false;
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
+async function handleRegister() {
   try {
     isLoading.value = true;
     registerMessage.value = '';
 
-    // Préparation des données en fonction du type d'utilisateur
-    let requestData;
-    let endpoint;
+    // pick the right endpoint
+    const endpoint =
+      userType.value === 'student'
+        ? 'http://localhost:8084/api/auth/student/register'
+        : 'http://localhost:8084/api/auth/psychologist/register';
+
+    // build multipart form data
+    const formData = new FormData();
+    formData.append('firstName',   registerData.firstName);
+    formData.append('lastName',    registerData.lastName);
+    formData.append('email',       registerData.email);
+    formData.append('password',    registerData.password);
+    formData.append('phoneNumber', registerData.phoneNumber);
 
     if (userType.value === 'student') {
-      endpoint = 'http://localhost:8084/api/auth/student/register';
-      requestData = {
-        firstName: registerData.firstName,
-        lastName: registerData.lastName,
-        email: registerData.email,
-        password: registerData.password,
-        phoneNumber: registerData.phoneNumber,
-        studentCardNumber: registerData.studentCardNumber,
-        university: registerData.university,
-        studyLevel: registerData.studyLevel
-      };
+      formData.append('studentCardNumber', registerData.studentCardNumber);
+      formData.append('university',        registerData.university);
+      formData.append('studyLevel',        registerData.studyLevel);
     } else {
-      endpoint = 'http://localhost:8084/api/auth/psychologist/register';
-      requestData = {
-        firstName: registerData.firstName,
-        lastName: registerData.lastName,
-        email: registerData.email,
-        password: registerData.password,
-        phoneNumber: registerData.phoneNumber,
-        adeliNumber: registerData.adeliNumber,
-        specialization: registerData.specialization
-      };
+      formData.append('adeliNumber',    registerData.adeliNumber);
+      formData.append('specialization', registerData.specialization);
     }
 
-    // Envoi des données
-    const response = await axios.post(endpoint, requestData);
+    // attach image if provided
+    if (profileImageFile.value) {
+      formData.append('profileImage', profileImageFile.value);
+    }
 
-    registerMessage.value = response.data || 'Inscription réussie ! Vérifiez votre email pour confirmer votre compte.';
+    // send as multipart/form-data
+    const response = await axios.post(endpoint, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+
+    registerMessage.value = response.data || 'Inscription réussie !';
     registerSuccess.value = true;
 
-    // Réinitialisation après succès
-    if (registerSuccess.value) {
-  setTimeout(() => {
-    (Object.keys(registerData) as Array<keyof typeof registerData>).forEach((key) => {
-      registerData[key] = '';
-    });
-    registerMessage.value = '';
-    const container = document.getElementById('container');
-    container?.classList.remove('right-panel-active');
-  }, 3000);
-}
-
+    // reset after success
+    setTimeout(() => {
+      Object.keys(registerData).forEach((key) => {
+        // @ts-ignore
+        registerData[key] = '';
+      });
+      profileImageFile.value = null;
+      registerMessage.value = '';
+      document.getElementById('container')?.classList.remove('right-panel-active');
+    }, 3000);
   } catch (error: any) {
-    // Gestion améliorée des erreurs
-    let errorMessage = "Erreur lors de l'inscription";
-    
+    // existing error handling...
+    let errorMessage = 'Erreur lors de l\'inscription';
     if (error.response) {
       if (typeof error.response.data === 'string') {
         errorMessage = error.response.data;
       } else if (error.response.data.message) {
         errorMessage = error.response.data.message;
       } else if (error.response.status === 409) {
-        errorMessage = "Cet email est déjà utilisé";
+        errorMessage = 'Cet email est déjà utilisé';
       } else if (error.response.status === 400) {
-        errorMessage = "Données invalides. Vérifiez les champs requis.";
+        errorMessage = 'Données invalides. Vérifiez les champs requis.';
       }
     } else if (error.request) {
-      errorMessage = "Erreur de connexion au serveur";
+      errorMessage = 'Erreur de connexion au serveur';
     }
-
     registerMessage.value = errorMessage;
     registerSuccess.value = false;
   } finally {
     isLoading.value = false;
   }
-};
+}
 
 // Connexion
 const handleLogin = async () => {
