@@ -644,8 +644,8 @@ UniWell is a dedicated platform designed to support students' mental well-being.
         </div>
         <div class="col-lg-12">
           <div class="copyright-text">
-            <p>Copyright © 2022 Chain App Dev Company. All Rights Reserved. 
-          <br>Design: <a href="https://templatemo.com/" target="_blank" title="css templates">TemplateMo</a></p>
+            <p>Copyright © 2025 DSI22. All Rights Reserved. 
+          </p>
           </div>
         </div>
       </div>
@@ -750,7 +750,7 @@ export default {
 <style  >
 .icon img {
   width: 150px;               /* pick your size */
-  height: 150px;
+  height: 200px;
   border-radius: 50%;
   object-fit: cover;          /* fill the circle without distortion */
 }

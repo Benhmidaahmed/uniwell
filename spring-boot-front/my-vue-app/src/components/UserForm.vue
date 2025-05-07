@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="dashboard-container">
     <div class="navigation">
       <ul>
         <li>
@@ -149,7 +149,7 @@
               >
                 <td width="60px">
                   <div class="imgBx">
-                    <img :src="student.avatar" :alt="student.name" />
+                    <img :src="getImageUrl(student.avatar)" :alt="student.name" class="student-avatar" />
                   </div>
                 </td>
                 <td>
@@ -173,7 +173,11 @@
         <div class="student-profile">
           <div class="profile-header">
             <div class="avatar">
-              <img :src="selectedStudent.urlImage || 'https://via.placeholder.com/150'" :alt="selectedStudent.firstName" />
+                          <img
+              :src="getImageUrl(selectedStudent.urlImage)"
+              :alt="`${selectedStudent.firstName} ${selectedStudent.lastName}`"
+              class="detail-avatar"
+            />
             </div>
             <div class="profile-info">
               <h1>{{ selectedStudent.firstName }} {{ selectedStudent.lastName }}</h1>
@@ -219,7 +223,11 @@
             <tr v-for="student in allStudents" :key="student.id">
               <td>
                 <div class="imgBx">
-                  <img :src="student.urlImage || 'https://via.placeholder.com/40'" :alt="student.firstName" />
+                                  <img
+                  :src="getImageUrl(student.urlImage)"
+                  :alt="student.firstName"
+                  class="student-avatar"
+                />
                 </div>
               </td>
               <td>{{ student.firstName }} {{ student.lastName }}</td>
@@ -231,12 +239,12 @@
           </tbody>
         </table>
       </div>
-
       <!-- All Appointments View -->
       <div v-if="currentView === 'allAppointments'" class="all-appointments-view">
         <div class="cardHeader">
           <h2>All Appointments</h2>
-          <button @click="currentView = 'dashboard'" class="back-btn">Back to Dashboard</button>
+          <button @click="currentView = 'dashboard'" class="back-btn" style="margin-bottom:10px">Back to Dashboard</button>
+          
         </div>
         <table class="appointments-table full-view">
           <thead>
@@ -294,12 +302,7 @@ export default {
       allStudents: [],
       recentStudents: [],
       appointments: [],
-      stats: {
-        dailyViews: 1504,
-        sales: 80,
-        comments: 284,
-        earnings: 7842
-      }
+     
     };
   },
   computed: {
@@ -311,6 +314,16 @@ export default {
     }
   },
   methods: {
+    getImageUrl(path) {
+    if (!path) {
+      return 'https://via.placeholder.com/40';
+    }
+    // already absolute?
+    if (path.startsWith('http')) {
+      return path;
+    }
+    return `http://localhost:8084${path}`;
+  },
     async fetchAllStudents() {
       try {
         const response = await fetch("http://localhost:8084/api/users/students");
@@ -327,7 +340,7 @@ export default {
         id: student.id,
         name: `${student.firstName} ${student.lastName}`,
         email: student.email,
-        avatar: student.urlImage || 'https://via.placeholder.com/40'
+        avatar: this.getImageUrl(student.urlImage)
       }));
     },
     async fetchAppointments() {
@@ -575,7 +588,7 @@ nav {
 
 
 
-.container {
+.dashboard-container {
   position: relative;
   width: 100%;
   margin: 0;

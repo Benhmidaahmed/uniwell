@@ -1,29 +1,30 @@
 <template>
-  <div class="container" id="container">
+  <div class="auth-wrapper">
+    <div class="container" id="container">
     <div class="form-container sign-up-container">
       <form @submit.prevent="handleRegister">
-        <h1>Créer un compte</h1>
+        
         
         <!-- Sélecteur de rôle -->
         <div class="role-selector">
           <button type="button" 
                   :class="{ active: userType === 'student' }"
                   @click="userType = 'student'">
-            Étudiant
+            STUDENT
           </button>
           <button type="button"
                   :class="{ active: userType === 'psychologist' }"
                   @click="userType = 'psychologist'">
-            Psychologue
+            PSYCHOLOGIST
           </button>
         </div>
 
         <!-- Champs communs -->
-        <input v-model="registerData.firstName" type="text" placeholder="Prénom" required>
-        <input v-model="registerData.lastName" type="text" placeholder="Nom" required>
+        <input v-model="registerData.firstName" type="text" placeholder="First name" required>
+        <input v-model="registerData.lastName" type="text" placeholder="Last name" required>
         <input v-model="registerData.email" type="email" placeholder="Email" required>
-        <input v-model="registerData.password" type="password" placeholder="Mot de passe" required>
-        <input v-model="registerData.phoneNumber" type="tel" placeholder="Téléphone">
+        <input v-model="registerData.password" type="password" placeholder="Password" required>
+        <input v-model="registerData.phoneNumber" type="tel" placeholder="Phone number" required>
         <div class="form-group">
       <input
         type="file"
@@ -37,11 +38,11 @@
         <div v-if="userType === 'student'" class="specific-fields">
           <input v-model="registerData.studentCardNumber" 
                  type="text" 
-                 placeholder="Numéro de carte étudiante (ex: AB123456)" 
+                 placeholder="student ID number (ex: AB123456)" 
                  required>
-          <input v-model="registerData.university" type="text" placeholder="Université" required>
+          <input v-model="registerData.university" type="text" placeholder="University" required>
           <select v-model="registerData.studyLevel" required>
-            <option value="" disabled>Sélectionnez votre niveau</option>
+            <option value="" disabled>Select your level</option>
             <option value="L1">Licence 1</option>
             <option value="L2">Licence 2</option>
             <option value="L3">Licence 3</option>
@@ -54,19 +55,19 @@
         <div v-if="userType === 'psychologist'" class="specific-fields">
           <input v-model="registerData.adeliNumber" 
                  type="text" 
-                 placeholder="Numéro ADELI" 
+                 placeholder="ADELI number" 
                  required>
           <input v-model="registerData.specialization" 
                  type="text" 
-                 placeholder="Spécialisation" 
+                 placeholder="Specialization" 
                  required>
         </div>
 
         <button type="submit" :disabled="isLoading">
-          {{ isLoading ? 'Inscription en cours...' : 'S\'inscrire' }}
+          {{ isLoading ? 'Signing up...' : 'Sign up' }}
         </button>
 
-        <p v-if="registerMessage" :class="messageClass">
+        <p v-if="registerMessage" :class="messageClass" style="margin-bottom:10px">
           {{ registerMessage }}
         </p>
       </form>
@@ -74,37 +75,40 @@
 
     <div class="form-container sign-in-container">
       <form @submit.prevent="handleLogin">
-        <h1>Connexion</h1>
+        <h1>Login to your account</h1>
         <input v-model="loginData.email" type="email" placeholder="Email" required>
         <input v-model="loginData.password" type="password" placeholder="Mot de passe" required>
-        <a href="#">Mot de passe oublié ?</a>
+        <a href="#">Forgot password?</a>
         <button type="submit" :disabled="isLoading">
-          {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+          {{ isLoading ? 'Connexion...' : 'Log in' }}
         </button>
         <p v-if="loginMessage" :class="loginMessageClass">
           {{ loginMessage }}
         </p>
       </form>
     </div>
+    
 
     <div class="overlay-container">
       <div class="overlay">
         <div class="overlay-panel overlay-left">
-          <h1>Content de vous revoir !</h1>
-          <p>Connectez-vous pour accéder à votre espace</p>
-          <button class="ghost" id="signIn">Se connecter</button>
+          <h1>Welcome back !</h1>
+          <p>Sign in to access your account</p>
+          <button class="ghost" id="signIn">Sign in</button>
         </div>
         <div class="overlay-panel overlay-right">
-          <h1>Nouveau ici ?</h1>
-          <p>Inscrivez-vous et commencez votre parcours avec nous</p>
+          <h1>New here?</h1>
+          <p>Sign up and start your journey with us!</p>
           <div class="signup-options">
-            <button class="ghost student" @click="selectUserType('student')">Étudiant</button>
-            <button class="ghost psychologist" @click="selectUserType('psychologist')">Psychologue</button>
+            <button class="ghost student" @click="selectUserType('student')">Student</button>
+            <button class="ghost psychologist" @click="selectUserType('psychologist')">Psychologist</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+  
 </template>
 
 <script setup lang="ts">
@@ -381,9 +385,27 @@ onMounted(() => {
 
 
 <style scoped>
+#container {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),
+              0 10px 10px rgba(0,0,0,0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  height: auto;         /* grow to fit */
+}
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f6f5f7;
+}
   /* Votre CSS existant reste inchangé */
   @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
-  
+  *, *::before, *::after { box-sizing: border-box; }
   * {
     box-sizing: border-box;
   }
@@ -525,16 +547,7 @@ button:disabled {
 .error {
   color: #F44336;
 }
-  body {
-    background: #f6f5f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    font-family: "Montserrat", sans-serif;
-    height: 100vh;
-    margin: -20px 0 50px;
-  }
+
   
   h1 {
     font-weight: bold;
@@ -543,13 +556,7 @@ button:disabled {
   #aa {
     color: white;
   }
-  #container {
-    display: flex;
-    justify-content: center; /* horizontal */
-    align-items: center;
-    margin-left: 350px;
-    margin-top: 50px;
-  }
+ 
   
   h2 {
     text-align: center;

@@ -79,13 +79,10 @@
 package com.example.demo.Controller;
 
 import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.PsychologistRegisterRequest;
-import com.example.demo.dto.StudentRegisterRequest;
 import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
 import com.example.demo.service.AuthService;
-import com.example.demo.service.FileStorageService; // Ensure this import matches the actual package of FileStorageService
-import lombok.RequiredArgsConstructor;
+import com.example.demo.service.FileStorageService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -96,59 +93,69 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
     private final FileStorageService fileStorageService;
-    // Inscription avec envoi d’email
-    @PostMapping("/student/register")
-    public ResponseEntity<?> registerStudent(@RequestBody StudentRegisterRequest request) {
-        User user = new User();
-        // Set common fields
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setNumTel(request.getPhoneNumber());
 
-        // Set student-specific fields
-        user.setStudentCardNumber(request.getStudentCardNumber());
-        user.setUniversity(request.getUniversity());
-        user.setStudyLevel(request.getStudyLevel());
-
-        authService.register(user, Role.STUDENT);
-        return ResponseEntity.ok("Inscription de l'étudiant réussie");
+    public AuthController(AuthService authService, FileStorageService fileStorageService) {
+        this.authService = authService;
+        this.fileStorageService = fileStorageService;
     }
 
-    // Psychologist registration with optional image upload
-    @PostMapping(
-        path = "/psychologist/register",
-        consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
-    public ResponseEntity<?> registerPsychologist(
-        @RequestPart("firstName")      String firstName,
-        @RequestPart("lastName")       String lastName,
-        @RequestPart("email")          String email,
-        @RequestPart("password")       String password,
-        @RequestPart("phoneNumber")    String phoneNumber,
-        @RequestPart("adeliNumber")    String adeliNumber,
-        @RequestPart("specialization") String specialization,
-        @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
+    // Inscription étudiant (multipart/form-data afin de gérer un upload optionnel)
+    @PostMapping(path = "/student/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registerStudent(
+            @RequestPart("firstName") String firstName,
+            @RequestPart("lastName") String lastName,
+            @RequestPart("email") String email,
+            @RequestPart("password") String password,
+            @RequestPart("phoneNumber") String phoneNumber,
+            @RequestPart("studentCardNumber") String studentCardNumber,
+            @RequestPart("university") String university,
+            @RequestPart("studyLevel") String studyLevel,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
     ) throws IOException {
         User user = new User();
-        // Set common fields
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
         user.setNumTel(phoneNumber);
+        user.setStudentCardNumber(studentCardNumber);
+        user.setUniversity(university);
+        user.setStudyLevel(studyLevel);
 
-        // Set psychologist-specific fields
+        if (profileImage != null && !profileImage.isEmpty()) {
+            String imageUrl = fileStorageService.storeFile(profileImage);
+            user.setUrlImage(imageUrl);
+        }
+
+        authService.register(user, Role.STUDENT);
+        return ResponseEntity.ok("Inscription de l'étudiant réussie");
+    }
+
+    // Inscription psychologue (multipart/form-data pour upload obligatoire ou non)
+    @PostMapping(path = "/psychologist/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registerPsychologist(
+            @RequestPart("firstName") String firstName,
+            @RequestPart("lastName") String lastName,
+            @RequestPart("email") String email,
+            @RequestPart("password") String password,
+            @RequestPart("phoneNumber") String phoneNumber,
+            @RequestPart("adeliNumber") String adeliNumber,
+            @RequestPart("specialization") String specialization,
+            @RequestPart(value = "profileImage", required = false) MultipartFile profileImage
+    ) throws IOException {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setNumTel(phoneNumber);
         user.setAdeliNumber(adeliNumber);
         user.setSpecialization(specialization);
 
-        // Handle profile image if provided
         if (profileImage != null && !profileImage.isEmpty()) {
             String imageUrl = fileStorageService.storeFile(profileImage);
             user.setUrlImage(imageUrl);
@@ -158,13 +165,13 @@ public class AuthController {
         return ResponseEntity.ok("Inscription du psychologue réussie");
     }
 
-    // Connexion simple (on peut plus tard ajouter un token JWT)
+    // Connexion
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             Map<String, Object> response = authService.login(
-                loginRequest.getEmail(),
-                loginRequest.getPassword()
+                    loginRequest.getEmail(),
+                    loginRequest.getPassword()
             );
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -172,10 +179,9 @@ public class AuthController {
         }
     }
 
-    // Confirmation de compte via lien reçu par email
+    // Confirmation de compte via token
     @GetMapping("/confirm")
     public String confirm(@RequestParam String token) {
         return authService.confirmToken(token);
     }
 }
-
