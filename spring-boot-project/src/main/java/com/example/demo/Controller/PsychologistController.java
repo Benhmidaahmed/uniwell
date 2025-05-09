@@ -1,7 +1,6 @@
 package com.example.demo.Controller;
 import com.example.demo.dto.PsychologistDto;
 import com.example.demo.entities.Role;
-import com.example.demo.entities.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
