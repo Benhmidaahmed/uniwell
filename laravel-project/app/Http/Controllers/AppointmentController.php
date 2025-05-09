@@ -2,38 +2,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
 
 class AppointmentController extends Controller
 {
-    public function getAllAppointments()
+    public function submit(Request $request): JsonResponse
     {
-        return response()->json(Appointment::all());
-    }
-
-    public function submitAppointment(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'client' => 'required|string',
             'date' => 'required|date',
+            'status' => 'required|string',
+            'userId' => 'required|integer',
             'email' => 'required|email',
-            // Add other fields as needed
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        $appointment = new Appointment();
+        $appointment->client = $validated['client'];
+        $appointment->date = $validated['date'];
+        $appointment->status = $request->input('status');
+        $appointment->user_id = $request->input('userId');
+        $appointment->created_at = now();
+        $appointment->updated_at = now();
+        $appointment->email = $request->input('email');
+        $appointment->save();
 
-        $appointment = Appointment::create($request->all());
+        return response()->json(['message' => 'Appointment saved successfully!']);
+    }
 
-        return response()->json([
-            'message' => 'Appointment saved successfully!',
-            'data' => $appointment
-        ]);
+    public function getAll(): JsonResponse
+    {
+        $appointments = Appointment::all();
+        return response()->json($appointments);
     }
 }

@@ -3,13 +3,27 @@ import AIAssistant from "@/pages/AIAssistant.vue";
 import UserForm from "@/components/UserForm.vue";
 import UserAuthentification from "@/components/UserAuthentification.vue";
 import StudentPortal from "@/pages/StudentPortal.vue";
-
+import Booking from "@/pages/Booking.vue";
+import Forum from "@/pages/Forum.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/dashboard",
     name: "UserForm",
     component: UserForm,
     meta: { requiresAuth: true }
+    
+  },
+  {
+    path: "/Forum",
+    name: "Forum",
+    component: Forum,
+    
+    
+  },
+  {
+    path: '/booking/:psyId',
+    name: 'Booking',
+    component: Booking,
     
   },
 {

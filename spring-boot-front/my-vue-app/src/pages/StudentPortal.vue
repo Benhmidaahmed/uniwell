@@ -226,39 +226,32 @@ UniWell is a dedicated platform designed to support students' mental well-being.
           <div class="section-heading">
             <h4>About <em>What We Do</em> &amp; Who We Are</h4>
             <img src="/template/assets/images/heading-line-dec.png" alt="">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
+            <p>UniWell is your all-in-one wellness platform, designed to support your mental, physical and emotional wellbeing through expert resources, personalized tools and a caring community – helping you thrive in every aspect of life..</p>
           </div>
           <div class="row">
             <div class="col-lg-6">
               <div class="box-item">
-                <h4><a href="#">Maintance Problems</a></h4>
-                <p>Lorem Ipsum Text</p>
+                <h4><a href="#">Mission-Driven Support</a></h4>
+                <p>UniWell is dedicated to empowering students with accessible tools and resources to prioritize mental, physical, and emotional wellness—because thriving starts from within.</p>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="box-item">
-                <h4><a href="#">24/7 Support &amp; Help</a></h4>
-                <p>Lorem Ipsum Text</p>
+                <h4><a href="#">Holistic Approach</a></h4>
+                <p>We combine expert-backed guidance, community support, and personalized strategies to help you navigate stress, build resilience, and achieve balance in your daily life.</p>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="box-item">
-                <h4><a href="#">Fixing Issues About</a></h4>
-                <p>Lorem Ipsum Text</p>
+                <h4><a href="#">Tailored for You</a></h4>
+                <p>Whether you're struggling with anxiety, burnout, or just need a productivity boost, our platform adapts to your unique needs with science-backed solutions.</p>
               </div>
             </div>
             <div class="col-lg-6">
               <div class="box-item">
-                <h4><a href="#">Co. Development</a></h4>
-                <p>Lorem Ipsum Text</p>
+                <h4><a href="#">Community & Connection</a></h4>
+                <p>Join a network of peers and professionals who get it. Share experiences, find encouragement, and grow together in a safe, judgment-free space.</p>
               </div>
-            </div>
-            <div class="col-lg-12">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor idunte ut labore et dolore adipiscing  magna.</p>
-              <div class="gradient-button">
-                <a href="#">Start 14-Day Free Trial</a>
-              </div>
-              <span>*No Credit Card Required</span>
             </div>
           </div>
         </div>
@@ -271,250 +264,102 @@ UniWell is a dedicated platform designed to support students' mental well-being.
     </div>
   </div>
 
-  <div id="clients" class="the-clients">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="section-heading">
-            <h4>Check What <em>The Clients Say</em> About Our App Dev</h4>
-            <img src="/template/assets/images/heading-line-dec.png" alt="">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
+    <!-- Dynamic Forum Threads Slider -->
+    <div id="clients" class="the-clients" v-if="randomThreads.length">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 offset-lg-2">
+            <div class="section-heading">
+              <h4>Check What <em>Students Discuss</em> On Our Forum</h4>
+              <img src="/template/assets/images/heading-line-dec.png" alt="Decoration">
+              <p>Explore real student conversations and find support through shared experiences.</p>
+            </div>
           </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="naccs">
-            <div class="grid">
-              <div class="row">
-                <div class="col-lg-7 align-self-center">
-                  <div class="menu">
-                    <div class="first-thumb active">
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>David Martino Co</h4>
-                            <span class="date">30 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Financial Apps</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.8</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>Jake Harris Nyo</h4>
-                            <span class="date">29 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Digital Business</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.5</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>May Catherina</h4>
-                            <span class="date">27 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Business &amp; Economics</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.7</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>Random User</h4>
-                            <span class="date">24 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">New App Ecosystem</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">3.9</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="last-thumb">
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>Mark Amber Do</h4>
-                            <span class="date">21 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Web Development</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.3</span>
+          <div class="col-lg-12">
+            <div class="naccs">
+              <div class="grid">
+                <div class="row">
+
+                  <!-- LEFT: Thread titles -->
+                  <div class="col-lg-7 align-self-center">
+                    <div class="menu">
+                      <div
+                        v-for="(thread, idx) in randomThreads"
+                        :key="thread.id"
+                        :class="[
+                          { 'first-thumb': idx === 0, 'last-thumb': idx === randomThreads.length - 1 },
+                          { active: idx === activeIndex }
+                        ]"
+                        @click="selectThread(idx)"
+                      >
+                        <div class="thumb">
+                          <div class="row">
+                            <div class="col-lg-4 col-sm-4 col-12">
+                              <h4>{{ thread.title }}</h4>
+                              <span class="date" v-if="thread.createdAt">{{ formatDate(thread.createdAt) }}</span>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 d-none d-sm-block">
+                              <span class="category">Posts: {{ thread.posts?.length || 0 }}</span>
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-12">
+                              <i
+                                class="fa fa-star"
+                                v-for="i in 5"
+                                :key="i"
+                                :class="{ checked: i <= (thread.posts?.length || 0) }"
+                              ></i>
+                              <span class="rating">{{ (thread.posts?.length || 0).toFixed(1) }}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div> 
-                <div class="col-lg-5">
-                  <ul class="nacc">
-                    <li class="active">
-                      <div>
+
+                  <!-- RIGHT: Thread content panels -->
+                  <div class="col-lg-5">
+                    <ul class="nacc">
+                      <li
+                        v-for="(thread, idx) in randomThreads"
+                        :key="thread.id"
+                        :class="{ active: idx === activeIndex }"
+                      >
                         <div class="thumb">
                           <div class="row">
                             <div class="col-lg-12">
                               <div class="client-content">
-                                <img src="/template/assets/images/quote.png" alt="">
-                                <p>“Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
+                                <img src="/template/assets/images/quote.png" alt="Quote">
+                                <p>
+                                  <!-- Show first post or fallback -->
+                                  {{ thread.posts?.length ? thread.posts[0].content : 'No posts yet for this discussion.' }}
+                                </p>
                               </div>
                               <div class="down-content">
-                                <img src="/template/assets/images/client-image.jpg" alt="">
+                                <img
+                                  :src="getImageUrl(thread.author.urlImage)"
+                                  alt="Author"
+                                  class="client-image"
+                                >
                                 <div class="right-content">
-                                  <h4>David Martino</h4>
-                                  <span>CEO of David Company</span>
+                                  <h6>{{ thread.author.username || thread.author.email }}</h6>
+                                  <span>Post Author</span>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="/template/assets/images/quote.png" alt="">
-                                <p>“CTO, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="/template/assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>Jake H. Nyo</h4>
-                                  <span>CTO of Digital Company</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="/template/assets/images/quote.png" alt="">
-                                <p>“May, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="/template/assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>May C.</h4>
-                                  <span>Founder of Catherina Co.</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="/template/assets/images/quote.png" alt="">
-                                <p>“Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="/template/assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>Random Staff</h4>
-                                  <span>Manager, Digital Company</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="/template/assets/images/quote.png" alt="">
-                                <p>“Mark, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="/template/assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>Mark Am</h4>
-                                  <span>CTO, Amber Do Company</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>          
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <!-- End Slider -->
 
   <div id="pricing" class="pricing-tables">
     <div class="container">
@@ -535,7 +380,7 @@ UniWell is a dedicated platform designed to support students' mental well-being.
            <!-- you can swap to a different class if you like -->
 
            <!-- Avatar -->
-           <div class="icon">
+           <div class="psy-icon" style="margin-bottom:10px">
              <img
                :src="getImageUrl(psy.urlImage)"
                :alt="psy.firstName + ' ' + psy.lastName"
@@ -570,7 +415,7 @@ UniWell is a dedicated platform designed to support students' mental well-being.
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
           <div class="section-heading">
-            <h4>Join our mailing list to receive the news &amp; latest trends</h4>
+            <h4>Join our mailing list to receive the news </h4>
           </div>
         </div>
         <div class="col-lg-6 offset-lg-3">
@@ -594,9 +439,10 @@ UniWell is a dedicated platform designed to support students' mental well-being.
         <div class="col-lg-3">
           <div class="footer-widget">
             <h4>Contact Us</h4>
-            <p>Rio de Janeiro - RJ, 22795-008, Brazil</p>
-            <p><a href="#">010-020-0340</a></p>
-            <p><a href="#">info@company.co</a></p>
+            <p>Bizerte - Bizerte Nord Avenue 7 Novembre - Bizerte
+            </p>
+            <p><a href="#">+216 92530813</a></p>
+            <p><a href="#">info.uniwell@iset-r.bizerte.tn</a></p>
           </div>
         </div>
         <div class="col-lg-3">
@@ -607,12 +453,12 @@ UniWell is a dedicated platform designed to support students' mental well-being.
               <li><a href="#">Services</a></li>
               <li><a href="#">About</a></li>
               <li><a href="#">Testimonials</a></li>
-              <li><a href="#">Pricing</a></li>
+              
             </ul>
             <ul>
               <li><a href="#">About</a></li>
               <li><a href="#">Testimonials</a></li>
-              <li><a href="#">Pricing</a></li>
+              
             </ul>
           </div>
         </div>
@@ -620,16 +466,14 @@ UniWell is a dedicated platform designed to support students' mental well-being.
           <div class="footer-widget">
             <h4>Useful Links</h4>
             <ul>
-              <li><a href="#">Free Apps</a></li>
-              <li><a href="#">App Engine</a></li>
-              <li><a href="#">Programming</a></li>
-              <li><a href="#">Development</a></li>
-              <li><a href="#">App News</a></li>
+              <li><a href="https://findahelpline.com/i/iasp">Crisis helpline</a></li>
+              <li><a href="https://www.nami.org/">National alliance on mental illness</a></li>
+              
             </ul>
             <ul>
-              <li><a href="#">App Dev Team</a></li>
-              <li><a href="#">Digital Web</a></li>
-              <li><a href="#">Normal Apps</a></li>
+              <li><a href="https://www.mind.org.uk/">Anxiety & Depression Toolkit </a></li>
+              <li><a href="https://www.headspace.com/studentplan">Headspace for Students</a></li>
+            
             </ul>
           </div>
         </div>
@@ -639,7 +483,7 @@ UniWell is a dedicated platform designed to support students' mental well-being.
             <div class="logo">
               <img src="/template/assets/images/white-logo.png" alt="">
             </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+            <p>Stronger minds, brighter futures.</p>
           </div>
         </div>
         <div class="col-lg-12">
@@ -664,8 +508,21 @@ export default {
   data(){
     return{
       psychologists: [],
+      threads: [],
+      randomThreads: [],
+      activeIndex: 0,
     };
   },
+  computed:{
+    selectedThreadContent() {
+      const thread = this.randomThreads[this.activeIndex];
+      // display first post content or a fallback message
+      return thread.posts && thread.posts.length
+        ? thread.posts[0].content
+        : 'No posts yet in this thread.';
+    }
+  }
+  ,
   mounted() {
     axios.get('http://localhost:8084/api/psychologists')
       .then(({data}) => {
@@ -675,8 +532,27 @@ export default {
         console.error("There was an error fetching the psychologists!", error);
       });
     this.loadResources();
+     // load random threads
+     axios.get('http://localhost:8084/api/forum/threads')
+      .then(({ data }) => {
+        this.threads = data;
+        this.randomThreads = this.shuffle(data).slice(0, 5);
+      })
+      .catch(err => console.error('Error fetching forum threads:', err));
+
   },
   methods: {
+    selectThread(idx) {
+      this.activeIndex = idx;
+    },
+    shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    },
     getImageUrl(path) {
       if (!path) return '/default-avatar.png';
       // If it's already an absolute URL, just use it:
@@ -685,10 +561,10 @@ export default {
       return `http://localhost:8084${path}`;
     },
 
-    bookSession(id) {
-      // e.g. navigate to /booking/:id or open a modal
-      this.$router.push({ name: 'Booking', params: { psyId: id } });
-    },
+    bookSession(psyId) {
+    // redirect to booking form for the selected psychologist
+    this.$router.push({ name: 'Booking', params: { psyId } });
+  },
     hidePreloader() {
   const preloader = document.getElementById('js-preloader');
   if (preloader) {
@@ -748,15 +624,19 @@ export default {
 };
 </script>
 <style  >
-.icon img {
+.box-item:hover{
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+.psy-icon img {
   width: 150px;               /* pick your size */
-  height: 200px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;          /* fill the circle without distortion */
 }
 
 /* 2) Add the glow */
-.icon img {
+.psy-icon img {
   /* subtle colored glow */
   box-shadow:
     0 0 10px rgba(74, 190, 255, 0.6),
@@ -766,7 +646,7 @@ export default {
 }
 
 /* 3) (Optional) Intensify glow on hover */
-.icon img:hover {
+.psy-icon img:hover {
   box-shadow:
     0 0 20px rgba(74, 190, 255, 0.8),
     0 0 40px rgba(74, 190, 255, 0.6),
@@ -792,7 +672,7 @@ export default {
   }
 }
 
-.icon img.pulsing {
+.psy-icon img.pulsing {
   animation: pulseGlow 2s infinite ease-in-out;
 }
 </style>

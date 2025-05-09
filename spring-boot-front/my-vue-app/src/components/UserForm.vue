@@ -243,7 +243,7 @@
       <div v-if="currentView === 'allAppointments'" class="all-appointments-view">
         <div class="cardHeader">
           <h2>All Appointments</h2>
-          <button @click="currentView = 'dashboard'" class="back-btn" style="margin-bottom:10px">Back to Dashboard</button>
+          <button @click="currentView = 'dashboard'" class="back-btn" style="margin-top:10px">Back to Dashboard</button>
           
         </div>
         <table class="appointments-table full-view">

@@ -132,6 +132,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                 "/api/psychologists/**",
                 "/api/users/students/**",
                 "/images/**",
+                "/api/messages/**",
                 "/error" // Ajoutez ceci pour les erreurs
             ).permitAll()
             .anyRequest().authenticated()
