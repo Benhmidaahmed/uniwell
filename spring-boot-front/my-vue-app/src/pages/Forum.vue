@@ -139,7 +139,7 @@
   
     try {
       const { data } = await axios.get<Post[]>(
-        `http://localhost:8084/api/forum/threads/${thread.id}/posts`
+        `/api/forum/threads/${thread.id}/posts`
       )
       posts.value = data
     } catch (err) {
@@ -153,7 +153,7 @@
   
     try {
       const { data } = await axios.get<Comment[]>(
-        `http://localhost:8084/api/forum/posts/${post.id}/comments`
+        `/api/forum/posts/${post.id}/comments`
       )
       comments.value = data
     } catch (err) {
@@ -165,7 +165,7 @@
     if (!newThreadTitle.value.trim()) return
     try {
       const { data } = await axios.post<ForumThread>(
-        'http://localhost:8084/api/forum/threads',
+        '/api/forum/threads',
         { title: newThreadTitle.value, userId: currentUserId }
       )
       threads.value.push(data)
@@ -179,7 +179,7 @@
     if (!selectedThread.value || !newPostContent.value.trim()) return
     try {
       const { data } = await axios.post<Post>(
-        `http://localhost:8084/api/forum/threads/${selectedThread.value.id}/posts`,
+        `/api/forum/threads/${selectedThread.value.id}/posts`,
         { content: newPostContent.value, userId: currentUserId }
       )
       posts.value.push(data)
@@ -193,7 +193,7 @@
     if (!selectedPost.value || !newCommentText.value.trim()) return
     try {
       const { data } = await axios.post<Comment>(
-        `http://localhost:8084/api/forum/posts/${selectedPost.value.id}/comments`,
+        `/api/forum/posts/${selectedPost.value.id}/comments`,
         { text: newCommentText.value, userId: currentUserId }
       )
       comments.value.push(data)

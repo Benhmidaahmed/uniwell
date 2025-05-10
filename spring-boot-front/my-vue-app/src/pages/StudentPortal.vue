@@ -563,7 +563,7 @@ export default {
 
     bookSession(psyId) {
     // redirect to booking form for the selected psychologist
-    this.$router.push({ name: 'Booking', params: { psyId } });
+    this.$router.push({ name: 'form', params: { psyId } });
   },
     hidePreloader() {
   const preloader = document.getElementById('js-preloader');

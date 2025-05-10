@@ -3,8 +3,8 @@ import AIAssistant from "@/pages/AIAssistant.vue";
 import UserForm from "@/components/UserForm.vue";
 import UserAuthentification from "@/components/UserAuthentification.vue";
 import StudentPortal from "@/pages/StudentPortal.vue";
-import Booking from "@/pages/Booking.vue";
 import Forum from "@/pages/Forum.vue";
+import form from "@/pages/form.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/dashboard",
@@ -20,16 +20,21 @@ const routes: Array<RouteRecordRaw> = [
     
     
   },
-  {
-    path: '/booking/:psyId',
-    name: 'Booking',
-    component: Booking,
+  // {
+  //   path: '/booking/:psyId',
+  //   name: 'Booking',
+  //   component: Booking,
     
-  },
+  // },
 {
     path: "/",
     name: "UserAuthentification",
     component: UserAuthentification,
+  },
+  {
+    path: "/form/:psyId",
+    name: "form",
+    component: form,
   },
   {
     path:"/StudentPortal",
