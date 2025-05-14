@@ -5,6 +5,7 @@ import UserAuthentification from "@/components/UserAuthentification.vue";
 import StudentPortal from "@/pages/StudentPortal.vue";
 import Forum from "@/pages/Forum.vue";
 import form from "@/pages/form.vue";
+import StudentChat from "@/pages/StudentChat.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/dashboard",
@@ -47,6 +48,12 @@ const routes: Array<RouteRecordRaw> = [
     component:AIAssistant,
   },
   {
+    path: '/chat/:psyId',
+    name: 'StudentChat',
+    component: StudentChat,
+    meta: { requiresAuth: true }
+  },
+  {
     path: "/about",
     name: "about",
     // route level code-splitting
@@ -60,7 +67,19 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    // if navigating to a hash, scroll to that element smoothly
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth'
+      };
+    }
+    // fallback to top
+    return { top: 0 };
+  },
 });
+
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
   if (to.meta.requiresGuest && token) {
@@ -69,9 +88,7 @@ router.beforeEach((to, from, next) => {
   }
   if (to.meta.requiresAuth && !token) {
     next('/');
-    
-  }
-   else {
+  } else {
     next();
   }
 });

@@ -5,6 +5,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\PsychologistController;
 
 // Supprimez le premier prefix('api') et utilisez directement le groupe
 Route::middleware('api')->group(function() {
@@ -26,4 +27,6 @@ Route::middleware('api')->group(function() {
     Route::middleware('auth:api')->get('/user', function (Request $request) {
         return $request->user();
     });
+
+    Route::get('psychologists', [PsychologistController::class, 'index']);
 });

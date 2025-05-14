@@ -35,4 +35,5 @@ class AppointmentController extends Controller
         $appointments = Appointment::all();
         return response()->json($appointments);
     }
+    
 }

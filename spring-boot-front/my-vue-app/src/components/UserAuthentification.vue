@@ -342,6 +342,7 @@ const handleLogin = async () => {
     // Stockage du rôle directement depuis la réponse
     const userRole = response.data.role;
     localStorage.setItem('userRole', userRole);
+    localStorage.setItem('userId', String(response.data.userId))
     
     loginMessage.value = response.data.message;
     loginSuccess.value = true;

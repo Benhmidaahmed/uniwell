@@ -58,7 +58,7 @@
             <span class="title">Chat with AI</span>
           </a>
         </li>
-        <li>
+        <!-- <li>
           <a
             href="#"
             @click.prevent="currentView = 'password'"
@@ -69,7 +69,7 @@
             </span>
             <span class="title">Password</span>
           </a>
-        </li>
+        </li> -->
         <li>
           <a href="#" @click.prevent="signOut">
             <span class="icon">
@@ -269,29 +269,86 @@
           </tbody>
         </table>
       </div>
+<!-- ==================== Messages View ==================== -->
+<div v-if="currentView === 'messages'" class="view-content messages-view">
+  <div class="messages-container">
+    <!-- Left: Contacts list -->
+    <aside class="contacts-list">
+      <h5>Students</h5>
+      <ul>
+        <li
+          v-for="stu in allStudents"
+          :key="stu.id"
+          :class="{ active: selectedContact?.id === stu.id }"
+          @click="loadConversation(stu)"
+        >
+          <img :src="getImageUrl(stu.urlImage)" alt="" class="avatar" />
+          <span class="name">{{ stu.firstName }} {{ stu.lastName }}</span>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Right: Chat panel -->
+    <section class="chat-panel">
+      <div v-if="!selectedContact" class="empty-state">
+        Select a student to start chatting
+      </div>
+      <div v-else class="chat-inner">
+        <!-- Header -->
+        <header class="chat-header">
+          <img :src="getImageUrl(selectedContact.urlImage)" alt="" class="avatar" />
+          <h5>{{ selectedContact.firstName }} {{ selectedContact.lastName }}</h5>
+        </header>
+        <!-- Message history -->
+        <div class="chat-body">
+          <div
+            v-for="msg in conversation"
+            :key="msg.id"
+            :class="['message', msg.sender.id === currentUserId ? 'sent' : 'received']"
+          >
+            <p>{{ msg.content }}</p>
+            <span class="ts">{{ formatTime(msg.timestamp) }}</span>
+          </div>
+        </div>
+        <!-- Input bar -->
+        <footer class="chat-input">
+          <input
+            v-model="newMessageText"
+            @keyup.enter="sendMessage"
+            placeholder="Type a message…"
+          />
+          <button @click="sendMessage">Send</button>
+        </footer>
+      </div>
+    </section>
+  </div>
+</div>
 
       <!-- Chatbot View -->
       <div v-if="currentView === 'chatbot'" class="chatbot-container">
         <iframe
           src="https://www.chatbase.co/chatbot-iframe/lR8CFH6F6R50cktx2LDnc"
           width="100%"
-          style="height: 70%; min-height: 700px"
+          style="height: 70%; min-height: 550px"
           frameborder="0"
         ></iframe>
         <button @click="currentView = 'dashboard'" class="back-btn">Back to Dashboard</button>
       </div>
 
-      <!-- Generic View for other menu items -->
+      <!-- Generic View for other menu items
       <div v-if="isGenericView" class="generic-view">
         <h2>{{ currentView.charAt(0).toUpperCase() + currentView.slice(1) }}</h2>
         <p>This section is under development.</p>
         <button @click="currentView = 'dashboard'" class="back-btn">Back to Dashboard</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'   
+axios.defaults.baseURL = 'http://localhost:8084'
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 export default {
   data() {
     return {
@@ -302,6 +359,10 @@ export default {
       allStudents: [],
       recentStudents: [],
       appointments: [],
+      currentUserId: Number(localStorage.getItem('userId')), 
+      selectedContact: null,
+      conversation: [],
+      newMessageText: ''
      
     };
   },
@@ -310,10 +371,48 @@ export default {
       return this.appointments.slice(0, 5);
     },
     isGenericView() {
-      return !['dashboard', 'students', 'student-detail', 'allAppointments', 'chatbot'].includes(this.currentView);
+      return !['dashboard', 'students', 'student-detail', 'allAppointments', 'chatbot', 'messages'].includes(this.currentView);
     }
   },
   methods: {
+    async loadConversation(student) {
+      this.selectedContact = student
+        // immediately switch the UI into your messages view
+  this.currentView = 'messages'
+
+      try {
+        const payload = {
+          user1Id: this.currentUserId,
+          user2Id: student.id
+        }
+        const { data } = await axios.post('/api/messages/conversation', payload)
+        this.conversation = data
+      } catch (e) {
+        console.error('Error loading conversation', e)
+      }
+    },
+
+    async sendMessage() {
+      console.log('sendMessage() called', { 
+     to: this.selectedContact, 
+     text: this.newMessageText 
+  });
+      if (!this.selectedContact || !this.newMessageText.trim()) return
+      try {
+        const payload = {
+          senderId: this.currentUserId,
+          receiverId: this.selectedContact.id,
+          message: this.newMessageText
+        };
+        console.log('→ payload:', payload);
+        await axios.post('/api/messages/send', payload)
+        this.newMessageText = ''
+        // reload so you see your new message
+        await this.loadConversation(this.selectedContact)
+      } catch (e) {
+        console.error('Error sending message', e)
+      }
+    },
     getImageUrl(path) {
     if (!path) {
       return 'https://via.placeholder.com/40';
@@ -394,10 +493,166 @@ export default {
       this.fetchAppointments()
     ]);
     console.log("Initial data loaded");
+    
   }
 };
 </script>
 <style scoped >
+
+.messages-container {
+  display: flex;
+  height: calc(100vh - 160px); /* adjust if your topbar is taller */
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+/* ---- Contacts List ---- */
+.contacts-list {
+  width: 240px;
+  border-right: 1px solid #eee;
+  overflow-y: auto;
+  padding: 1rem 0.5rem;
+  background: #fafafa;
+}
+.contacts-list h5 {
+  margin: 0 0 0.5rem 0.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+.contacts-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.contacts-list li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.contacts-list li.active,
+.contacts-list li:hover {
+  background: #e4e6eb;
+}
+.contacts-list .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+.contacts-list .name {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* ---- Chat Panel ---- */
+.chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.empty-state {
+  margin: auto;
+  color: #999;
+  font-style: italic;
+}
+.chat-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Header */
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+.chat-header .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.75rem;
+}
+.chat-header h5 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Body */
+.chat-body {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #f5f5f5;
+}
+.message {
+  max-width: 65%;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 16px;
+  position: relative;
+  word-break: break-word;
+}
+.message.sent {
+  background: #4a76a8;
+  color: #fff;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.message.received {
+  background: #fff;
+  color: #333;
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
+}
+.message .ts {
+  display: block;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 0.25rem;
+  text-align: right;
+}
+.message.received .ts {
+  color: rgba(0,0,0,0.45);
+}
+
+/* Input */
+.chat-input {
+  display: flex;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+}
+.chat-input input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+}
+.chat-input button {
+  margin-left: 0.5rem;
+  padding: 0 1rem;
+  background: #4a76a8;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-input button:hover {
+  background: #3b5c83;
+}
+
 /* Student Detail View Styles */
 .student-detail-view {
   padding: 20px;
@@ -1275,12 +1530,13 @@ recentOrders table tbody td {
 }
 
 .message {
-  text-align: center;
+  text-align: left;
   margin-top: 20px;
   padding: 10px;
   border-radius: 5px;
   background: #e1f5e1;
   color: #2e7d32;
+  border-radius: 20px;
 }
 
 .view-content {

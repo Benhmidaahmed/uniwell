@@ -8,8 +8,6 @@
         />
         <button @click="createThread">Create Thread</button>
       </section>
-  
-      <!-- List of threads -->
       <section class="threads">
         <h2>Threads</h2>
         <ul>
@@ -24,7 +22,6 @@
           </li>
         </ul>
       </section>
-  
       <!-- Posts in the selected thread -->
       <section
         v-if="selectedThread"

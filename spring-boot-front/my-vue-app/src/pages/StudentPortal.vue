@@ -16,10 +16,14 @@
       <div class="row">
         <div class="col-12">
           <nav class="main-nav">
+            <router-link to="/" class="logo">
+  <h1 class="logo-text">UniWell</h1>
+  <p class="logo-tagline">stronger minds, brighter future</p>
+</router-link>
             <!-- ***** Logo Start ***** -->
-            <a href="index.html" class="logo">
+            <!-- <a href="index.html" class="logo">
               <img src="/template/assets/images/logo.png" alt="Chain App Dev">
-            </a>
+            </a> -->
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
@@ -134,17 +138,29 @@
                   <div class="col-lg-12">
                     <!-- <h2>Get The Latest App From App Stores</h2> -->
                     <p><h3>Welcome to UniWell – Your Student Mental Health Companion</h3>
-UniWell is a dedicated platform designed to support students' mental well-being. We offer a safe space to talk, access professional help, schedule therapy sessions, and connect with peers through forums. Whether you're feeling overwhelmed, anxious, or just need someone to talk to, MindSupport is here to help you feel heard, supported, and empowered.
+UniWell is a dedicated platform designed to support students' mental well-being. We offer a safe space to talk, access professional help, schedule therapy sessions, and connect with peers through forums. Whether you're feeling overwhelmed, anxious, or just need someone to talk to, UniWell is here to help you feel heard, supported, and empowered.
 
 </p>
+<!-- <div class="text-button">
+  <router-link
+    :to="{ name: 'AIAssistant' }"
+    class="btn-link"
+  >
+    See more <i class="fa fa-arrow-right"></i>
+  </router-link>
+  white-button first-button scroll-to-section
+</div> -->
                   </div>
                   <div class="col-lg-12">
                     <div class="white-button first-button scroll-to-section">
-                      <a href="#contact">Contact our AI Assistant <ion-icon name="logo-reddit"></ion-icon></a>
+                      <a href="#/AIAssistant">Contact our AI Assistant <ion-icon name="logo-reddit"></ion-icon></a>
                     </div>
-                    <div class="white-button scroll-to-section">
-                      <a href="#contact">Book an appointment </a>
-                    </div>
+                  
+                    <div class="white-button">
+   <router-link :to="{ name:'StudentPortal', hash:'#pricing' }">
+     Book an appointment
+   </router-link>
+ </div>
                   </div>
                 </div>
               </div>
@@ -191,9 +207,15 @@ UniWell is a dedicated platform designed to support students' mental well-being.
             <h4>List of psychologists</h4>
             <p>Browse our list of certified psychologists and choose the right support for you. Click here to view profiles, specialties, and availability.</p>
             <div class="text-button">
-              <a href="#">See more <i class="fa fa-arrow-right"></i></a>
+              <router-link
+                :to="{ name: 'StudentPortal', hash: '#pricing' }"
+                class="btn-link"
+              >
+                See more <i class="fa fa-arrow-right"></i>
+              </router-link>
             </div>
-          </div>
+
+                      </div>
         </div>
         <div class="col-lg-3">
           <div class="service-item third-service">
@@ -201,8 +223,13 @@ UniWell is a dedicated platform designed to support students' mental well-being.
             <h4>Chat with AI</h4>
             <p>>Need quick support or someone to talk to anytime? Click here to start a private, judgment-free conversation with our intelligent chatbot—available 24/7.</p>
             <div class="text-button">
-              <a href="#">See more <i class="fa fa-arrow-right"></i></a>
-            </div>
+  <router-link
+    :to="{ name: 'AIAssistant' }"
+    class="btn-link"
+  >
+    See more <i class="fa fa-arrow-right"></i>
+  </router-link>
+</div>
           </div>
         </div>
         <div class="col-lg-3">
@@ -211,8 +238,13 @@ UniWell is a dedicated platform designed to support students' mental well-being.
             <h4>Forum &amp; private messages</h4>
             <p>access the forum and private messages. Share your thoughts, ask questions, and connect one-on-one with other students in a safe and supportive space.</p>
             <div class="text-button">
-              <a href="#">See More <i class="fa fa-arrow-right"></i></a>
-            </div>
+  <router-link
+    :to="{ name: 'Forum' }"
+    class="btn-link"
+  >
+    See more <i class="fa fa-arrow-right"></i>
+  </router-link>
+</div>
           </div>
         </div>
       </div>
@@ -401,9 +433,17 @@ UniWell is a dedicated platform designed to support students' mental well-being.
            <!-- Action button -->
            <div class="border-button">
              <a href="#" @click.prevent="bookSession(psy.id)">
-               Book a Session
+               Book a session
              </a>
            </div>
+           <div class="border-button" style="margin-top: 10px;">
+    <router-link
+      :to="{ name: 'StudentChat', params: { psyId: psy.id } }"
+      class="send-message-btn"
+   >
+      Send Message
+    </router-link>
+ </div>
          </div>
        </div>
       </div>
@@ -479,10 +519,8 @@ UniWell is a dedicated platform designed to support students' mental well-being.
         </div>
         <div class="col-lg-3">
           <div class="footer-widget">
-            <h4>About Our Company</h4>
-            <div class="logo">
-              <img src="/template/assets/images/white-logo.png" alt="">
-            </div>
+            
+            
             <p>Stronger minds, brighter futures.</p>
           </div>
         </div>
@@ -624,6 +662,59 @@ export default {
 };
 </script>
 <style  >
+.header-area .main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* your logo wrapper */
+.header-area .main-nav .logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;    /* kill any default browser margins */
+  padding: 0;
+  z-index: 10;  /* keep it above any background shapes */
+}
+
+/* the big “UniWell” */
+.header-area .main-nav .logo-text {
+  margin-top: 10px;
+  font-size: 2rem;     /* tweak to taste */
+  line-height: 1;
+  color: #0cace6;         /* or whatever your theme wants */
+}
+
+/* the little tagline */
+.header-area .main-nav .logo-tagline {
+  margin: 0;
+  font-size: 0.9rem;       /* tweak to taste */
+  font-style: italic;
+  color: rgba(31, 38, 41, 0.75);
+}
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+}
+
+.logo-text {
+  font-family: 'Pacifico', cursive;   /* you can swap in any “fancy” font */
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin: 0;
+  line-height: 1;
+}
+
+.logo-tagline {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  font-style: italic;
+  margin: 0.1rem 0 0;
+}
+
 .box-item:hover{
   transform: scale(1.05);
   transition: transform 0.3s ease-in-out;
