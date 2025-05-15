@@ -405,7 +405,7 @@ onMounted(() => {
   background: #f6f5f7;
 }
   /* Votre CSS existant reste inchangé */
-  @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+  /* @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800"); */
   *, *::before, *::after { box-sizing: border-box; }
   * {
     box-sizing: border-box;

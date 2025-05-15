@@ -32,7 +32,14 @@
               <li class="scroll-to-section"><a href="#about">About</a></li>
               <li class="scroll-to-section"><a href="#pricing">Pyschologists</a></li>
               <li class="scroll-to-section"><a href="#newsletter">Newsletter</a></li>
-              <li><div class="gradient-button"><a id="modal_trigger" href="#modal"><i class="fa fa-sign-in-alt"></i> Sign out </a></div></li> 
+              <li><div class="gradient-button" @click.prevent="signOut" ><a id="modal_trigger" href="#modal"><i class="fa fa-sign-in-alt"></i> Sign out </a></div></li>
+              
+  <!-- <div class="gradient-button">
+    <button @click.prevent="signOut" class="btn-logout">
+      <i class="fa fa-sign-out-alt"></i> Sign Out
+    </button>
+  </div>
+</li>  -->
             </ul>        
             <a class='menu-trigger'>
                 <span>Menu</span>
@@ -367,16 +374,27 @@ UniWell is a dedicated platform designed to support students' mental well-being.
                                 </p>
                               </div>
                               <div class="down-content">
-                                <img
-                                  :src="getImageUrl(thread.author.urlImage)"
-                                  alt="Author"
-                                  class="client-image"
-                                >
-                                <div class="right-content">
-                                  <h6>{{ thread.author.username || thread.author.email }}</h6>
-                                  <span>Post Author</span>
-                                </div>
-                              </div>
+  <img
+    :src="getImageUrl(
+      thread.posts && thread.posts.length
+        ? thread.posts[0].author.urlImage
+        : thread.author.urlImage
+    )"
+    alt="Author"
+    class="client-image"
+  />
+  <div class="right-content">
+    <h6>
+      {{
+        thread.posts && thread.posts.length
+          ? (thread.posts[0].author.username || thread.posts[0].author.email)
+          : (thread.author.username || thread.author.email)
+      }}
+    </h6>
+    <span>Post Author</span>
+  </div>
+</div>
+
                             </div>
                           </div>
                         </div>
@@ -580,6 +598,18 @@ export default {
 
   },
   methods: {
+    signOut() {
+    // 1. Remove everything
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+
+    // 2. (Optional) clear any cached axios headers
+    delete axios.defaults.headers.common['Authorization'];
+
+    // 3. Redirect to your login page
+    window.location.replace('/');
+  },
     selectThread(idx) {
       this.activeIndex = idx;
     },

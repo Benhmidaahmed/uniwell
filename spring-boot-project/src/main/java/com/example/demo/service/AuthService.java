@@ -24,7 +24,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authManager;
     private final CustomUserDetailsService customUserDetailsService; // Ajouté
-    private final JwtService jwtService; // Ajouté
+    private final JwtService jwtService; 
 
     public String register(User user,Role role) {
         if (userRepo.findByEmail(user.getEmail()).isPresent()) {

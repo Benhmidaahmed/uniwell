@@ -4,10 +4,10 @@
       <ul>
         <li>
           <a href="#" @click.prevent="currentView = 'dashboard'">
-            <span class="icon">
-              <ion-icon name="laptop-sharp"></ion-icon>
-            </span>
-            <span class="title">UniWell</span>
+            <div class="logo-wrap" style="margin-top:20px ; margin-left:10px">
+              <h1 class="logo-text">UniWell</h1>
+              <p class="logo-tagline">stronger minds, brighter future</p>
+            </div>
           </a>
         </li>
         <li>
@@ -499,6 +499,60 @@ export default {
 </script>
 <style scoped >
 
+.navigation ul {
+  padding-top: 1rem; /* give a bit of breathing room */
+}
+
+.logo-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  transition: padding 0.3s;
+}
+.logo-wrap {
+  text-align: center;
+  overflow: hidden;          /* prevent stray text on collapse */
+  transition: width 0.3s;
+}
+.navigation:not(.active) .logo-wrap {
+  width: 200px;              /* enough for full text */
+}
+.navigation.active .logo-wrap {
+  width: 30px;               /* just enough for your icon or first letter */
+}
+.navigation:not(.active) .logo-text {
+  font-size: 1.5rem;
+  white-space: nowrap;
+}
+.navigation.active .logo-text {
+  font-size: 2rem;
+  line-height: 1;
+  /* maybe use only the “U” here */
+}
+.navigation:not(.active) .logo-tagline {
+  display: block;
+}
+.navigation.active .logo-tagline {
+  display: none;
+}
+
+
+
+
+.logo-text {
+  margin: 0;
+  font-family: 'Pacifico', cursive; /* or whatever “fancy” font you prefer */
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.logo-tagline {
+  margin: 0;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+}
 .messages-container {
   display: flex;
   height: calc(100vh - 160px); /* adjust if your topbar is taller */

@@ -13,6 +13,10 @@ public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepo;
 
+ 
+ 
+ 
+ 
     public Appointment createAppointment(
             String client, ZonedDateTime date, int userId, String email) {
         Appointment appt = new Appointment()

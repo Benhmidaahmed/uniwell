@@ -10,14 +10,16 @@ body,
 #app {
   margin: 0;
   padding: 0;
+  
 }
 body {
   min-height: 100vh;
   overflow-x: hidden;
   background: var(--gray);
 }
+/* #2a2185 */
 :root {
-  --blue: #2a2185;
+  --blue: #0CACE6;
   --white: #fff;
   --gray: #f5f5f5;
   --black1: #222;
@@ -39,6 +41,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 nav a {
   font-weight: bold;

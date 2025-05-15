@@ -1,0 +1,7 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;    /* ← exactly the size you want everywhere */
+    line-height: 1.5;
+    font-family: 'Montserrat', sans-serif;
+  }

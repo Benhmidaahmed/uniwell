@@ -117,7 +117,8 @@
   const newCommentText = ref('')
   
   // TODO: replace with real current user ID from your auth
-  const currentUserId = 1
+  const currentUserId = Number(localStorage.getItem('userId'))
+
   
   async function fetchThreads() {
     try {
