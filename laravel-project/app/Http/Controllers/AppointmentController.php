@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
@@ -7,6 +8,9 @@ use Illuminate\Http\JsonResponse;
 
 class AppointmentController extends Controller
 {
+    /**
+     * Store a new appointment.
+     */
     public function submit(Request $request): JsonResponse
     {
         $validated = $request->validate([
@@ -17,23 +21,26 @@ class AppointmentController extends Controller
             'email' => 'required|email',
         ]);
 
-        $appointment = new Appointment();
-        $appointment->client = $validated['client'];
-        $appointment->date = $validated['date'];
-        $appointment->status = $request->input('status');
-        $appointment->user_id = $request->input('userId');
-        $appointment->created_at = now();
-        $appointment->updated_at = now();
-        $appointment->email = $request->input('email');
-        $appointment->save();
+        $appointment = Appointment::create([
+            'client' => $validated['client'],
+            'date' => $validated['date'],
+            'status' => $validated['status'],
+            'user_id' => $validated['userId'],
+            'email' => $validated['email'],
+        ]);
 
-        return response()->json(['message' => 'Appointment saved successfully!']);
+        return response()->json([
+            'message' => 'Appointment saved successfully!',
+            'appointment' => $appointment,
+        ], 201);
     }
 
+    /**
+     * Retrieve all appointments.
+     */
     public function getAll(): JsonResponse
     {
         $appointments = Appointment::all();
         return response()->json($appointments);
     }
-    
 }

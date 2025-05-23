@@ -5,85 +5,79 @@ namespace App\Services;
 use App\Models\Forum\ForumThread;
 use App\Models\Forum\Post;
 use App\Models\Forum\Comment;
-use App\Models\User;
+use App\Models\utilisateur;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ForumService
 {
-    // Create a new thread
-    public function createThread(string $title, User $author)
+    public function createThread(string $title, utilisateur $author)
     {
-        $thread = new ForumThread();
-        $thread->title = $title;
-        $thread->author_id = $author->id; // Assuming author is a User model
+        $thread = new ForumThread([
+            'title' => $title,
+            'author_id' => $author->id,
+        ]);
         $thread->save();
-        
+
         return $thread;
     }
 
-    // Create a new post under a thread
-    public function createPost($threadId, string $content, User $author)
+    public function getAllThreads()
     {
-        $thread = ForumThread::find($threadId);
+        return ForumThread::with('author')->get();
+    }
 
-        if (!$thread) {
-            throw new ModelNotFoundException("Thread not found");
-        }
 
-        $post = new Post();
-        $post->content = $content;
-        $post->author_id = $author->id;
-        $post->thread_id = $thread->id;
+    public function createPost($threadId, string $content, utilisateur $author)
+    {
+        $thread = ForumThread::findOrFail($threadId);
+
+        $post = new Post([
+            'content' => $content,
+            'author_id' => $author->id,
+            'thread_id' => $thread->id,
+        ]);
         $post->save();
 
         return $post;
     }
 
-    // Add a comment to a post
-    public function addComment($postId, string $text, User $author)
-    {
-        $post = Post::find($postId);
-
-        if (!$post) {
-            throw new ModelNotFoundException("Post not found");
-        }
-
-        $comment = new Comment();
-        $comment->text = $text;
-        $comment->author_id = $author->id;
-        $comment->post_id = $post->id;
-        $comment->save();
-
-        return $comment;
-    }
-
-    // Get all threads
-    public function getAllThreads()
-    {
-        return ForumThread::all();
-    }
-
-    // Get posts for a specific thread
     public function getPostsByThreadId($threadId)
     {
-        $thread = ForumThread::find($threadId);
-
-        if (!$thread) {
-            throw new ModelNotFoundException("Thread not found");
-        }
-
-        return $thread->posts;
+        $thread = ForumThread::findOrFail($threadId);
+        return $thread->posts()->with('author')->get();
     }
 
-    // Get comments for a specific post
-    public function getCommentsByPostId($postId)
+
+
+
+
+
+
+
+
+
+        public function addComment($postId, string $text, utilisateur $author)
+        {
+            $post = Post::findOrFail($postId);
+
+            $comment = new Comment([
+                'text' => $text,
+                'author_id' => $author->id,
+                'post_id' => $post->id,
+            ]);
+            $comment->save();
+
+            return $comment;
+        }
+
+            public function getCommentsByPostId($postId)
     {
-        $post = Post::find($postId);
-
-        if (!$post) {
-            throw new ModelNotFoundException("Post not found");
-        }
-
-        return $post->comments;
+        $post = Post::findOrFail($postId);
+        return $post->comments()->with('author')->get();
     }
+
+
+
+
 }
+
